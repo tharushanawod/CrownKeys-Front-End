@@ -1,0 +1,27 @@
+@import "tailwindcss";
+@tailwind utilities;
+
+
+@theme {
+  --color-primary: #3b4876;
+  --color-secondary: #091a2b;
+  --color-secondary-low: #e6e8ea;
+  --color-text: #a8aeaf;
+}
+
+
+/* @keyframes marquee {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee {
+  animation: marquee 15s linear infinite;
+}
+.translate-101 {
+  transform: translateX(101%);
+} */
