@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   FaEnvelope,
   FaLock,
@@ -8,8 +8,11 @@ import {
   FaEyeSlash,
   FaArrowLeft,
 } from "react-icons/fa";
+import axios from "axios";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -44,13 +47,46 @@ const Login = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrors({}); // Clear previous errors
+  
     if (validateForm()) {
-      // Handle login submission here
-      console.log("Login submitted:", formData);
+      setIsLoading(true);
+      try {
+        const response = await axios.post('http://localhost:5000/api/auth/login', formData);
+        console.log("Login successful:", response.data);
+  
+        // Redirect to dashboard after success
+        setTimeout(() => {
+          navigate("/dashboard", {
+            state: {
+              message: "Login successful!",
+              email: formData.email,
+            },
+          });
+        }, 1000);
+  
+      } catch (error) {
+        const newErrors = {};
+        const message = error.response?.data?.message || "Login failed";
+  
+        if (message.includes("Invalid credentials")) {
+          newErrors.password = "Invalid email or password"; // More user-friendly
+          newErrors.email = "Invalid email or password";   // Show same error for both
+        } else if (message.includes("email")) {
+          newErrors.email = message;
+        } else {
+          newErrors.general = message;
+        }
+  
+        setErrors(newErrors);
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
+  
 
   return (
     <div
@@ -185,12 +221,41 @@ const Login = () => {
             {/* Submit Button */}
             <div>
               <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                whileHover={{ scale: isLoading ? 1 : 1.02 }}
+                whileTap={{ scale: isLoading ? 1 : 0.98 }}
                 type="submit"
-                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#005163] hover:bg-[#091a2b] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#005163] transition-colors duration-300"
+                disabled={isLoading}
+                className={`w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#005163] hover:bg-[#091a2b] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#005163] transition-colors duration-300 ${
+                  isLoading ? "opacity-75 cursor-not-allowed" : ""
+                }`}
               >
-                Sign In
+                {isLoading ? (
+                  <div className="flex items-center">
+                    <svg
+                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    Signing In...
+                  </div>
+                ) : (
+                  "Sign In"
+                )}
               </motion.button>
             </div>
           </form>

@@ -96,7 +96,7 @@ const SignUp = () => {
   
       try {
         // Replace the URL below with your actual signup endpoint
-        console.log(formData);
+        
         const response = await axios.post('http://localhost:5000/api/auth/register', formData);
         console.log("Signup successful:", response.data);
         setShowSuccessPopup(true);
