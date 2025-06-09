@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import {
   FaUser,
   FaEnvelope,
@@ -16,7 +17,8 @@ import {
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
-    fullName: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -27,6 +29,9 @@ const SignUp = () => {
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const navigate = useNavigate();
 
   const userRoles = [
     { id: "buyer", label: "Buyer", icon: <FaHome className="text-2xl" /> },
@@ -59,7 +64,8 @@ const SignUp = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.fullName.trim()) newErrors.fullName = "Full name is required";
+    if (!formData.firstName.trim()) newErrors.firstName = "First name is required";
+    if (!formData.lastName.trim()) newErrors.lastName = "Last name is required";
     if (!formData.email.trim()) newErrors.email = "Email is required";
     else if (!/\S+@\S+\.\S+/.test(formData.email))
       newErrors.email = "Email is invalid";
@@ -71,16 +77,57 @@ const SignUp = () => {
     if (!formData.phone.trim()) newErrors.phone = "Phone number is required";
     if (!formData.userRole) newErrors.userRole = "Please select a user role";
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    // setErrors(newErrors);
+    return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      // Handle form submission here
-      console.log("Form submitted:", formData);
+
+    // Validate form
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
     }
+
+    setIsLoading(true);
+    setErrors({});
+  
+      try {
+        // Replace the URL below with your actual signup endpoint
+        console.log(formData);
+        const response = await axios.post('http://localhost:5000/api/auth/register', formData);
+        console.log("Signup successful:", response.data);
+        setShowSuccessPopup(true);
+
+        setTimeout(() => {
+          navigate("/login", {
+            state: {
+              message: "Registration successful! Please log in to continue.",
+              email: formData.email,
+            },
+          });
+        }, 3000);
+        // Optionally, handle redirect or show success message here
+      } catch (error) {
+        if (error.response && error.response.data && error.response.data.errors) {
+          // If your backend sends validation errors in this format
+          setErrors(error.response.data.errors);
+        } 
+        else if (error.response?.data?.message) {
+          console.log(error.response.data); // Show general error
+        }
+        
+        else {
+          // Handle generic error
+          console.error("Signup error:", error);
+        }
+      }
+      finally {
+        setIsLoading(false);
+      }
+    
   };
 
   // Password strength calculation
@@ -142,6 +189,42 @@ const SignUp = () => {
         backgroundPosition: "center",
       }}
     >
+          
+          {/* Success Popup */}
+      {showSuccessPopup && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-8 mx-4 max-w-sm w-full text-center shadow-2xl">
+            <div className="flex justify-center mb-4">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+                <svg
+                  className="w-8 h-8 text-green-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M5 13l4 4L19 7"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              Registration Successful!
+            </h3>
+            <p className="text-gray-600 mb-4">
+              You have registered successfully. Redirecting to login page...
+            </p>
+            <div className="flex justify-center">
+              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-green-600"></div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Semi-transparent overlay */}
       <div className="absolute inset-0 bg-black/50"></div>
 
@@ -201,32 +284,61 @@ const SignUp = () => {
           </div>
 
           <form className="space-y-6" onSubmit={handleSubmit}>
-            {/* Full Name */}
+            {/* First Name */}
             <div>
               <label
-                htmlFor="fullName"
+                htmlFor="firstName"
                 className="block text-sm font-medium text-[#091a2b]"
               >
-                Full Name
+                First Name
               </label>
               <div className="mt-1 relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <FaUser className="text-[#005163]" />
                 </div>
                 <input
-                  id="fullName"
-                  name="fullName"
+                  id="firstName"
+                  name="firstName"
                   type="text"
-                  value={formData.fullName}
+                  value={formData.firstName}
                   onChange={handleChange}
-                  placeholder="R.H.K Rathnayake"
+                  placeholder="Enter your first name"
                   className={`block w-full pl-10 pr-3 py-2 border ${
-                    errors.fullName ? "border-red-500" : "border-gray-300"
+                    errors.firstName ? "border-red-500" : "border-gray-300"
                   } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#005163] focus:border-transparent`}
                 />
               </div>
-              {errors.fullName && (
-                <p className="mt-1 text-sm text-red-600">{errors.fullName}</p>
+              {errors.firstName && (
+                <p className="mt-1 text-sm text-red-600">{errors.firstName}</p>
+              )}
+            </div>
+
+            {/* Last Name */}
+            <div>
+              <label
+                htmlFor="lastName"
+                className="block text-sm font-medium text-[#091a2b]"
+              >
+                Last Name
+              </label>
+              <div className="mt-1 relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <FaUser className="text-[#005163]" />
+                </div>
+                <input
+                  id="lastName"
+                  name="lastName"
+                  type="text"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  placeholder="Enter your last name"
+                  className={`block w-full pl-10 pr-3 py-2 border ${
+                    errors.lastName ? "border-red-500" : "border-gray-300"
+                  } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#005163] focus:border-transparent`}
+                />
+              </div>
+              {errors.lastName && (
+                <p className="mt-1 text-sm text-red-600">{errors.lastName}</p>
               )}
             </div>
 
@@ -248,7 +360,7 @@ const SignUp = () => {
                   type="email"
                   value={formData.email}
                   onChange={handleChange}
-                  placeholder="rathnayake@example.com"
+                  placeholder="Enter your email"
                   className={`block w-full pl-10 pr-3 py-2 border ${
                     errors.email ? "border-red-500" : "border-gray-300"
                   } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#005163] focus:border-transparent`}
@@ -277,7 +389,7 @@ const SignUp = () => {
                   type="tel"
                   value={formData.phone}
                   onChange={handleChange}
-                  placeholder="+(94) 712345678"
+                  placeholder="Enter your phone number"
                   className={`block w-full pl-10 pr-3 py-2 border ${
                     errors.phone ? "border-red-500" : "border-gray-300"
                   } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#005163] focus:border-transparent`}
@@ -306,7 +418,7 @@ const SignUp = () => {
                   type={showPassword ? "text" : "password"}
                   value={formData.password}
                   onChange={handleChange}
-                  placeholder="••••••••"
+                  placeholder="Enter your password"
                   className={`block w-full pl-10 pr-10 py-2 border ${
                     errors.password ? "border-red-500" : "border-gray-300"
                   } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#005163] focus:border-transparent`}
@@ -368,7 +480,7 @@ const SignUp = () => {
                   type={showConfirmPassword ? "text" : "password"}
                   value={formData.confirmPassword}
                   onChange={handleChange}
-                  placeholder="••••••••"
+                  placeholder="Confirm your password"
                   className={`block w-full pl-10 pr-10 py-2 border ${
                     errors.confirmPassword
                       ? "border-red-500"
@@ -398,7 +510,14 @@ const SignUp = () => {
                 type="submit"
                 className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#005163] hover:bg-[#091a2b] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#005163] transition-colors duration-300"
               >
-                Create Account
+                {isLoading ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-2"></div>
+                      Registering...
+                    </>
+                  ) : (
+                    "Create Account"
+                  )}
               </motion.button>
             </div>
           </form>
