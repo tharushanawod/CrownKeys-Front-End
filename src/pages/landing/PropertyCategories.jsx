@@ -150,7 +150,7 @@ const PropertyCategories = () => {
         <div className="container mx-auto px-4">
           <motion.div variants={titleVariants} className="text-center mb-12">
             <motion.h2
-              className="text-3xl md:text-4xl font-bold text-gray-800 mb-4"
+              className="text-3xl md:text-4xl font-bold text-gray-800 my-4"
               whileHover={{ scale: 1.02 }}
               transition={{ duration: 0.2 }}
             >
@@ -211,7 +211,7 @@ const PropertyCategories = () => {
                         transition={{ delay: 0.2 }}
                       >
                         <motion.span
-                          className="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium"
+                          className="bg-primary text-white px-3 py-1 rounded-full text-sm font-medium"
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                         >
@@ -233,14 +233,14 @@ const PropertyCategories = () => {
                         transition={{ duration: 0.2 }}
                       >
                         <motion.div
-                          className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center text-green-600 mr-4"
+                          className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-primary mr-4"
                           whileHover={{ scale: 1.1, rotate: 5 }}
                           transition={{ duration: 0.2 }}
                         >
                           {category.icon}
                         </motion.div>
                         <motion.h3
-                          className="text-xl font-semibold text-gray-800 group-hover:text-green-600 transition-colors"
+                          className="text-xl font-semibold text-gray-800 group-hover:text-secondary transition-colors"
                           whileHover={{ scale: 1.02 }}
                         >
                           {category.title}
@@ -255,7 +255,7 @@ const PropertyCategories = () => {
                         {category.description}
                       </motion.p>
                       <motion.div
-                        className="flex items-center text-green-600 font-medium"
+                        className="flex items-center text-primary font-medium"
                         variants={buttonVariants}
                         whileHover="hover"
                         whileTap="tap"
@@ -289,7 +289,7 @@ const PropertyCategories = () => {
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link
                 to="/properties"
-                className="inline-flex items-center px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                className="inline-flex items-center px-6 py-3 bg-primary text-white rounded-lg hover:bg-secondary transition-colors"
               >
                 View All Categories
                 <motion.svg

@@ -144,7 +144,7 @@ const Login = () => {
                   type="email"
                   value={formData.email}
                   onChange={handleChange}
-                  placeholder="rathnayake@example.com"
+                  placeholder="email@example.com"
                   className={`block w-full pl-10 pr-3 py-2 border ${
                     errors.email ? "border-red-500" : "border-gray-300"
                   } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#005163] focus:border-transparent`}

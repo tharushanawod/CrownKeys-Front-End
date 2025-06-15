@@ -272,24 +272,28 @@ const Landing = () => {
 
   // Navigation functions for latest listings carousel
   const nextListing = () => {
-    setCurrentListingIndex((prev) =>
-      prev === latestListings.length - 3 ? 0 : prev + 1
-    );
+    setCurrentListingIndex((prev) => {
+      const maxIndex = latestListings.length - 3;
+      return prev >= maxIndex ? 0 : prev + 1;
+    });
   };
 
   const prevListing = () => {
-    setCurrentListingIndex((prev) =>
-      prev === 0 ? latestListings.length - 3 : prev - 1
-    );
+    setCurrentListingIndex((prev) => {
+      const maxIndex = latestListings.length - 3;
+      return prev <= 0 ? maxIndex : prev - 1;
+    });
   };
 
   return (
     <div className="min-h-screen">
       <Header />
-     
 
       {/* Hero Section with Carousel */}
-      <section className="relative h-screen w-full overflow-hidden" style={{ backgroundColor: "#000000" }}>
+      <section
+        className="relative h-screen w-full overflow-hidden"
+        style={{ backgroundColor: "#000000" }}
+      >
         <AnimatePresence mode="wait">
           {heroImages.map(
             (image, index) =>
@@ -516,7 +520,7 @@ const Landing = () => {
                 <motion.div
                   key={listing.id}
                   whileHover={{ y: -10 }}
-                  className="w-1/3 px-4 flex-shrink-0"
+                  className="sm:w-1/3 px-4 w-1/2 flex-shrink-0 "
                 >
                   <motion.div
                     whileHover={{
@@ -743,7 +747,38 @@ const Landing = () => {
         </div>
       </motion.section>
 
-      <CircularGallery />
+      {/* Advertisements Section */}
+      <motion.section
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={staggerContainer}
+        className="py-16 bg-gray-50"
+      >
+        <div className="container mx-auto px-4">
+          <motion.div variants={fadeInUp} className="text-center mb-12">
+            <motion.h2
+              whileHover={{ scale: 1.02 }}
+              className="text-3xl md:text-4xl font-bold text-gray-800 mb-4"
+            >
+              Advertisements
+            </motion.h2>
+            <motion.p
+              variants={fadeInUp}
+              className="text-gray-600 max-w-2xl mx-auto"
+            >
+              Discover our featured properties and exclusive deals
+            </motion.p>
+          </motion.div>
+
+          <motion.div
+            variants={fadeInUp}
+            className="bg-white rounded-xl shadow-lg p-6 md:p-8"
+          >
+            <CircularGallery />
+          </motion.div>
+        </div>
+      </motion.section>
 
       {/* Why Choose Us Section */}
       <motion.section
@@ -860,7 +895,7 @@ const Landing = () => {
       </motion.section>
 
       {/* Footer */}
- <Footer/>
+      <Footer />
     </div>
   );
 };
