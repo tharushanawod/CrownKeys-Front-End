@@ -188,7 +188,7 @@ const sampleHouses = [
   },
 ];
 
-const ITEMS_PER_PAGE = 6;
+const ITEMS_PER_PAGE = 9;
 
 const Houses = () => {
   const [searchQuery, setSearchQuery] = useState("");

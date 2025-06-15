@@ -15,7 +15,9 @@ const SignUp = lazy(() => import("./pages/auth/SignUp"));
 const Login = lazy(() => import("./pages/auth/Login"));
 const ContactUs = lazy(() => import("./pages/landing/ContactUs"));
 const AboutUs = lazy(() => import("./pages/landing/AboutUs"));
-const OwnerDashboard = lazy(() => import("./pages/owner/OwnerDashboard"));
+const OwnerDashboard = lazy(() => import("./pages/Owner/OwnerDashboard"));
+const Packages = lazy(() => import("./pages/Owner/Packages"));
+const Profile = lazy(() => import("./pages/Owner/Profile"));
 
 function App() {
   return (
@@ -38,6 +40,8 @@ function App() {
           <Route path="/owner/dashboard" element={<OwnerDashboard />} />
           <Route path="/owner/properties" element={<OwnerProperties />} />
           <Route path="/owner/post-ad" element={<PostAd />} />
+          <Route path="/owner/packages" element={<Packages />} />
+          <Route path="/owner/settings" element={<Profile />} />
         </Routes>
       </Suspense>
     </Router>
