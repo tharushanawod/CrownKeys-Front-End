@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Suspense, lazy } from "react";
-import OwnerProperties from "./pages/owner/OwnerProperties";
+import Loader from "./components/Loader";
 
 
 const Home = lazy(() => import("./pages/landing/Home"));
@@ -28,7 +28,7 @@ const Financial = lazy(() => import("./pages/Owner/Financial"));
 function App() {
   return (
     <Router>
-      <Suspense fallback={<Loader />}>
+      <Suspense fallback={<Loader/>}>
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/home" element={<Home />} />
