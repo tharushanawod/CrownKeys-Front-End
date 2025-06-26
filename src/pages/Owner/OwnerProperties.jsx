@@ -94,6 +94,8 @@ const filterOptions = ["All", "Active", "Maintenance", "Vacant"];
 const OwnerProperties = () => {
   const [filter, setFilter] = useState("All");
   const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const propertiesPerPage = 6;
 
   const filteredProperties = sampleProperties.filter((prop) => {
     const matchesFilter = filter === "All" || prop.status === filter;
@@ -102,6 +104,20 @@ const OwnerProperties = () => {
       prop.address.toLowerCase().includes(search.toLowerCase());
     return matchesFilter && matchesSearch;
   });
+
+  // Calculate pagination
+  const totalPages = Math.ceil(filteredProperties.length / propertiesPerPage);
+  const indexOfLastProperty = currentPage * propertiesPerPage;
+  const indexOfFirstProperty = indexOfLastProperty - propertiesPerPage;
+  const currentProperties = filteredProperties.slice(
+    indexOfFirstProperty,
+    indexOfLastProperty
+  );
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <div className="min-h-screen bg-[#f1f3f4] flex">
@@ -149,7 +165,7 @@ const OwnerProperties = () => {
         {/* Properties Grid */}
         <main className="flex-1 p-4 md:p-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredProperties.map((prop) => (
+            {currentProperties.map((prop) => (
               <div
                 key={prop.id}
                 className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 hover:-translate-y-1 border border-[#a8aeaf] flex flex-col"
@@ -201,6 +217,53 @@ const OwnerProperties = () => {
           {filteredProperties.length === 0 && (
             <div className="text-center text-[#a8aeaf] mt-16 text-lg">
               No properties found.
+            </div>
+          )}
+
+          {/* Pagination */}
+          {filteredProperties.length > 0 && (
+            <div className="flex justify-center items-center mt-8 gap-2">
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className={`p-2 rounded-lg border ${
+                  currentPage === 1
+                    ? "text-gray-400 border-gray-200 cursor-not-allowed"
+                    : "text-[#005163] border-[#005163] hover:bg-[#005163] hover:text-white"
+                } transition-colors`}
+              >
+                <FaChevronLeft />
+              </button>
+
+              {[...Array(totalPages)].map((_, index) => (
+                <button
+                  key={index + 1}
+                  onClick={() => handlePageChange(index + 1)}
+                  className={`w-10 h-10 rounded-lg border ${
+                    currentPage === index + 1
+                      ? "bg-[#005163] text-white border-[#005163]"
+                      : "text-[#3b4876] border-[#a8aeaf] hover:bg-[#f1f3f4]"
+                  } transition-colors`}
+                >
+                  {index + 1}
+                </button>
+              ))}
+
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className={`p-2 rounded-lg border ${
+                  currentPage === totalPages
+                    ? "text-gray-400 border-gray-200 cursor-not-allowed"
+                    : "text-[#005163] border-[#005163] hover:bg-[#005163] hover:text-white"
+                } transition-colors`}
+              >
+                <FaChevronRight />
+              </button>
+
+              <span className="ml-4 text-[#3b4876]">
+                Page {currentPage} of {totalPages}
+              </span>
             </div>
           )}
         </main>

@@ -1,5 +1,6 @@
 import React from "react";
 import SidebarOwner from "../../components/SidebarOwner";
+import { Link } from "react-router-dom";
 
 const stats = [
   {
@@ -107,9 +108,12 @@ const OwnerDashboard = () => {
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <button className="bg-[#005163] text-white px-4 py-2 rounded-lg font-semibold hover:bg-[#091a2b] transition-colors">
+            <Link
+              to="/owner/post-ad"
+              className="bg-[#005163] text-white px-4 py-2 rounded-lg font-semibold hover:bg-[#091a2b] transition-colors"
+            >
               + Add Property
-            </button>
+            </Link>
             <button className="bg-[#f1f3f4] text-[#005163] px-3 py-2 rounded-lg font-semibold hover:bg-[#e0e4e6] transition-colors">
               Search
             </button>
