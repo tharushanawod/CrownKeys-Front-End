@@ -10,7 +10,7 @@ function Header() {
         <div className="flex justify-between items-center">
           <div className="flex items-center">
             <img
-              src="./Images/Common/logo.png"
+              src="./Images/Common/ww.png"
               alt="RealEstate Logo"
               className="h-8 w-auto"
             />

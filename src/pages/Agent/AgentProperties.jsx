@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import SidebarOwner from "../../components/SidebarOwner";
+import SidebarAgent from "../../components/SidebarAgent";
 import PropertiesLayout from "../../components/PropertiesLayout";
 import PropertiesFilter from "../../components/PropertiesFilter";
 import PropertiesGrid from "../../components/PropertiesGrid";
@@ -25,7 +25,7 @@ const sampleProperties = [
     beds: 4,
     baths: 3,
     area: "2,200 sqft",
-    status: "Maintenance",
+    status: "Pending",
     image:
       "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
   },
@@ -37,7 +37,7 @@ const sampleProperties = [
     beds: 4,
     baths: 2,
     area: "2,000 sqft",
-    status: "Vacant",
+    status: "Sold",
     image:
       "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=800&q=80",
   },
@@ -73,28 +73,53 @@ const sampleProperties = [
     beds: 3,
     baths: 3,
     area: "2,000 sqft",
-    status: "Maintenance",
+    status: "Pending",
     image:
       "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: 7,
+    title: "Waterfront Condo",
+    address: "234 Harbor View, San Diego, CA 92101",
+    price: "$3,500/month",
+    beds: 2,
+    baths: 2,
+    area: "1,200 sqft",
+    status: "Active",
+    image:
+      "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: 8,
+    title: "Garden Townhouse",
+    address: "456 Green Street, Seattle, WA 98101",
+    price: "$2,900/month",
+    beds: 3,
+    baths: 2.5,
+    area: "1,800 sqft",
+    status: "Sold",
+    image:
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80",
   },
 ];
 
 const statusColors = {
   Active: "bg-green-100 text-green-700",
-  Maintenance: "bg-yellow-100 text-yellow-700",
-  Vacant: "bg-red-100 text-red-700",
+  Pending: "bg-yellow-100 text-yellow-700",
+  Sold: "bg-blue-100 text-blue-700",
 };
 
-const filterOptions = ["All", "Active", "Maintenance", "Vacant"];
+const filterOptions = ["All", "Active", "Pending", "Sold"];
 
 const sortOptions = [
   { value: "latest", label: "Sort by: Latest Added" },
   { value: "price-low", label: "Price: Low to High" },
   { value: "price-high", label: "Price: High to Low" },
   { value: "status", label: "Status" },
+  { value: "commission", label: "Commission: High to Low" },
 ];
 
-const OwnerProperties = () => {
+const AgentProperties = () => {
   const [filter, setFilter] = useState("All");
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -124,13 +149,13 @@ const OwnerProperties = () => {
   };
 
   const handlePropertyAction = (property) => {
-    console.log("Property action clicked:", property);
-    // Add your action logic here
+    console.log("Agent property action clicked:", property);
+    // Add agent-specific action logic here
   };
 
   const handleSortChange = (sortValue) => {
     setCurrentSort(sortValue);
-    // Add your sorting logic here
+    // Add agent-specific sorting logic here
   };
 
   const filterActions = (
@@ -148,8 +173,9 @@ const OwnerProperties = () => {
 
   return (
     <PropertiesLayout
-      sidebar={SidebarOwner}
-      title="My Properties"
+      sidebar={SidebarAgent}
+      title="My Listings"
+      subtitle="Manage your property listings and track their performance"
       actions={filterActions}
     >
       <PropertiesGrid
@@ -166,4 +192,4 @@ const OwnerProperties = () => {
   );
 };
 
-export default OwnerProperties;
+export default AgentProperties;
