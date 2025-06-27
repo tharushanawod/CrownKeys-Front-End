@@ -71,9 +71,9 @@ const SidebarOwner = () => {
           ))}
         </nav>
         <div className="px-4 mt-8">
-          <button className="w-full bg-[#005163] text-white py-2 rounded-lg font-semibold hover:bg-[#091a2b] transition-colors flex items-center justify-center gap-2">
+          <Link to="/owner/packages" className="w-full bg-[#005163] text-white py-2 rounded-lg font-semibold hover:bg-[#091a2b] transition-colors flex items-center justify-center gap-2">
             <FaArrowUp /> Upgrade to Pro
-          </button>
+          </Link>
         </div>
         <div className="px-4 mt-8 text-xs text-[#a8aeaf]">
           <p className="mb-2 font-semibold">Need Help?</p>

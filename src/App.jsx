@@ -18,12 +18,14 @@ const AboutUs = lazy(() => import("./pages/landing/AboutUs"));
 const OwnerDashboard = lazy(() => import("./pages/Owner/OwnerDashboard"));
 const Packages = lazy(() => import("./pages/Owner/Packages"));
 const Profile = lazy(() => import("./pages/Owner/Profile"));
-const OwnerProperties = lazy(() => import("./pages/owner/OwnerProperties"));
-const PostAd = lazy(() => import("./pages/owner/PostAd"));
+const OwnerProperties = lazy(() => import("./pages/Owner/OwnerProperties"));
+const PostAd = lazy(() => import("./pages/Owner/PostAd"));
 const Inquiries = lazy(() => import("./pages/Owner/Inquiries"));
 const Offers = lazy(() => import("./pages/Owner/Offers"));
 const Analytics = lazy(() => import("./pages/Owner/Analytics"));
 const Financial = lazy(() => import("./pages/Owner/Financial"));
+const AgentDashboard = lazy(() => import("./pages/Agent/AgentDashboard"));
+
 
 function App() {
   return (
@@ -52,6 +54,7 @@ function App() {
           <Route path="/owner/offers" element={<Offers />} />
           <Route path="/owner/analytics" element={<Analytics />} />
           <Route path="/owner/financial" element={<Financial />} />
+          <Route path="/agent/dashboard" element={<AgentDashboard />} />
         </Routes>
       </Suspense>
     </Router>

@@ -1,38 +1,96 @@
-import React from "react";
+import React, { useState } from "react";
+import {
+  FaHome,
+  FaBuilding,
+  FaEnvelope,
+  FaTags,
+  FaComments,
+  FaChartBar,
+  FaMoneyBill,
+  FaCog,
+  FaChevronLeft,
+  FaChevronRight,
+  FaArrowUp,
+} from "react-icons/fa";
+import { Link, useLocation } from "react-router-dom";
+
+const navLinks = [
+  { name: "Dashboard", icon: <FaHome />, path: "/agent/dashboard" },
+  { name: "My Listings", icon: <FaBuilding />, path: "/agent/listings" },
+  { name: "Inquiries", icon: <FaEnvelope />, path: "/agent/inquiries" },
+  { name: "Offers", icon: <FaTags />, path: "/agent/offers" },
+  { name: "Messages", icon: <FaComments />, path: "/agent/messages" },
+  { name: "Analytics", icon: <FaChartBar />, path: "/agent/analytics" },
+  { name: "Commissions", icon: <FaMoneyBill />, path: "/agent/commissions" },
+  { name: "Settings", icon: <FaCog />, path: "/agent/settings" },
+];
 
 const SidebarAgent = () => {
+  const [open, setOpen] = useState(false);
+  const location = useLocation();
+
   return (
-    <div className="w-64 bg-[#091a2b] text-white min-h-screen p-6">
-      {/* Placeholder for Agent Sidebar */}
-      <h2 className="text-2xl font-bold mb-8">Agent Dashboard</h2>
-      <ul>
-        <li className="mb-4">
-          <a href="#" className="hover:text-[#005163] transition-colors">
-            Profile
-          </a>
-        </li>
-        <li className="mb-4">
-          <a href="#" className="hover:text-[#005163] transition-colors">
-            My Listings
-          </a>
-        </li>
-        <li className="mb-4">
-          <a href="#" className="hover:text-[#005163] transition-colors">
-            Inquiries
-          </a>
-        </li>
-        <li className="mb-4">
-          <a href="#" className="hover:text-[#005163] transition-colors">
-            Packages
-          </a>
-        </li>
-        <li className="mb-4">
-          <a href="#" className="hover:text-[#005163] transition-colors">
-            Settings
-          </a>
-        </li>
-      </ul>
-    </div>
+    <>
+      {/* Mobile Toggle Button */}
+      <button
+        className="lg:hidden fixed top-4 left-4 z-40 bg-[#005163] text-white p-2 rounded-full shadow-lg focus:outline-none"
+        onClick={() => setOpen(!open)}
+        aria-label="Toggle sidebar"
+      >
+        {open ? <FaChevronLeft /> : <FaChevronRight />}
+      </button>
+      {/* Sidebar */}
+      <aside
+        className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-30 transform transition-transform duration-300 lg:translate-x-0 ${
+          open ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+        }`}
+      >
+        <div className="flex items-center justify-between px-6 py-6 border-b border-gray-100">
+          <span className="text-2xl font-bold text-[#005163]">CrownKeys</span>
+          <button
+            className="lg:hidden text-gray-400 hover:text-[#005163]"
+            onClick={() => setOpen(false)}
+            aria-label="Close sidebar"
+          >
+            <FaChevronLeft />
+          </button>
+        </div>
+        <nav className="flex-1 px-4 py-6 space-y-2">
+          {navLinks.map((link) => (
+            <Link
+              key={link.name}
+              to={link.path}
+              className={`flex items-center gap-3 px-4 py-2 rounded-lg font-medium transition-colors duration-200 hover:bg-[#f1f3f4] text-[#3b4876] ${
+                location.pathname === link.path ? "bg-[#005163] text-white" : ""
+              }`}
+              onClick={() => setOpen(false)}
+            >
+              <span className="text-lg">{link.icon}</span>
+              {link.name}
+            </Link>
+          ))}
+        </nav>
+        <div className="px-4 mt-8">
+          <Link
+            to="/agent/packages"
+            className="w-full bg-[#005163] text-white py-2 rounded-lg font-semibold hover:bg-[#091a2b] transition-colors flex items-center justify-center gap-2"
+          >
+            <FaArrowUp /> Upgrade to Pro
+          </Link>
+        </div>
+        <div className="px-4 mt-8 text-xs text-[#a8aeaf]">
+          <p className="mb-2 font-semibold">Need Help?</p>
+          <p>Contact our support team</p>
+        </div>
+      </aside>
+      {/* Overlay for mobile */}
+      {open && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-30 z-20 lg:hidden"
+          onClick={() => setOpen(false)}
+        ></div>
+      )}
+    </>
   );
 };
 
