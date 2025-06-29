@@ -9,11 +9,17 @@ function Header() {
       <nav className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
-            <img
-              src="./Images/Common/ww.png"
+             <img
+              src="./Images/Common/ewe.png"
               alt="RealEstate Logo"
-              className="h-8 w-auto"
+              className="h-12 w-full"
             />
+            <img
+              src="./Images/Common/TEXT3.png"
+              alt="RealEstate Logo"
+              className="h-12 w-full"
+            />
+           
           </div>
 
           {/* Mobile menu button */}
