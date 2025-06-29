@@ -29,6 +29,8 @@ const AgentProperties = lazy(() => import("./pages/Agent/AgentProperties"));
 const BuyerDashboard = lazy(() => import("./pages/Buyer/BuyerDashboard"));
 const SavedProperties = lazy(() => import("./pages/Buyer/SavedProperties"));
 const PropertySearch = lazy(() => import("./pages/Buyer/PropertySearch"));
+const BuyerProfile = lazy(() => import("./pages/Buyer/Profile"));
+
 
 
 function App() {
@@ -63,6 +65,8 @@ function App() {
           <Route path="/buyer/dashboard" element={<BuyerDashboard />} />
           <Route path="/buyer/favorites" element={<SavedProperties />} />
           <Route path="/buyer/search" element={<PropertySearch />} />
+          <Route path="/buyer/profile" element={<BuyerProfile />} />
+
 
         </Routes>
       </Suspense>

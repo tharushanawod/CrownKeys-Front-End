@@ -14,6 +14,7 @@ import {
   FaSignOutAlt,
 } from "react-icons/fa";
 import SidebarBuyer from "../../components/SidebarBuyer";
+import { Link } from "react-router-dom";
 
 const statCards = [
   { label: "Saved Properties", value: 12, icon: <FaRegHeart /> },
@@ -92,11 +93,11 @@ const BuyerDashboard = () => {
       <SidebarBuyer />
       {/* Top Bar */}
       <div className="flex justify-end items-center mb-6 bg-white">
-        <button className="relative p-2 rounded-full hover:bg-[#e0f2fe] focus:outline-none mr-4">
+        <Link to="buyer/profile" className="relative p-2 rounded-full hover:bg-[#e0f2fe] focus:outline-none mr-4">
           <FaBell className="text-2xl text-[#0284c7]" />
           {/* Notification dot */}
           <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
-        </button>
+        </Link>
         <div className="relative">
           <button
             className="flex items-center gap-2 p-2 rounded-full hover:bg-[#e0f2fe] focus:outline-none"

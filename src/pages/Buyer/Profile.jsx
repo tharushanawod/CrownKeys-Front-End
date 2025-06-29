@@ -1,8 +1,8 @@
 import React from "react";
 import Profile from "../../components/Profile";
-import SidebarOwner from "../../components/SidebarOwner";
+import SidebarBuyer from "../../components/SidebarBuyer";
 
-const OwnerProfile = () => {
+const BuyerProfile = () => {
   // Mock user data - replace with actual data from your backend
   const userData = {
     name: "John Silva",
@@ -47,12 +47,12 @@ const OwnerProfile = () => {
 
   return (
     <Profile
-      userType="owner"
-      SidebarComponent={SidebarOwner}
+      userType="buyer"
+      SidebarComponent={SidebarBuyer}
       userData={userData}
       recentActivity={recentActivity}
     />
   );
 };
 
-export default OwnerProfile;
+export default BuyerProfile;

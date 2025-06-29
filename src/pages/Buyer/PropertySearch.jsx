@@ -154,23 +154,34 @@ const PropertySearch = () => {
 
   // Filter and search logic
   const filteredProperties = properties.filter((property) => {
-    const matchesSearch = searchQuery === "" || 
+    const matchesSearch =
+      searchQuery === "" ||
       property.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
       property.address.toLowerCase().includes(searchQuery.toLowerCase());
-    
-    const matchesLocation = locationQuery === "" ||
+
+    const matchesLocation =
+      locationQuery === "" ||
       property.address.toLowerCase().includes(locationQuery.toLowerCase());
-    
+
     const propertyPrice = parseInt(property.price.replace(/[$,]/g, ""));
-    const matchesPrice = 
+    const matchesPrice =
       (priceRange.min === "" || propertyPrice >= parseInt(priceRange.min)) &&
       (priceRange.max === "" || propertyPrice <= parseInt(priceRange.max));
-    
-    const matchesBeds = bedrooms === "" || property.beds >= parseInt(bedrooms);
-    const matchesBaths = bathrooms === "" || property.baths >= parseInt(bathrooms);
-    const matchesType = propertyType === "" || property.category === propertyType;
 
-    return matchesSearch && matchesLocation && matchesPrice && matchesBeds && matchesBaths && matchesType;
+    const matchesBeds = bedrooms === "" || property.beds >= parseInt(bedrooms);
+    const matchesBaths =
+      bathrooms === "" || property.baths >= parseInt(bathrooms);
+    const matchesType =
+      propertyType === "" || property.category === propertyType;
+
+    return (
+      matchesSearch &&
+      matchesLocation &&
+      matchesPrice &&
+      matchesBeds &&
+      matchesBaths &&
+      matchesType
+    );
   });
 
   // Sort properties
@@ -207,7 +218,7 @@ const PropertySearch = () => {
   };
 
   const handleScheduleTour = (property) => {
-    console.log('Schedule tour for:', property);
+    console.log("Schedule tour for:", property);
   };
 
   const clearFilters = () => {
@@ -319,14 +330,18 @@ const PropertySearch = () => {
                 type="number"
                 placeholder="Min Price"
                 value={priceRange.min}
-                onChange={(e) => setPriceRange({ ...priceRange, min: e.target.value })}
+                onChange={(e) =>
+                  setPriceRange({ ...priceRange, min: e.target.value })
+                }
                 className="w-1/2 px-3 py-3 border border-[#e2e8f0] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0284c7] focus:border-transparent"
               />
               <input
                 type="number"
                 placeholder="Max Price"
                 value={priceRange.max}
-                onChange={(e) => setPriceRange({ ...priceRange, max: e.target.value })}
+                onChange={(e) =>
+                  setPriceRange({ ...priceRange, max: e.target.value })
+                }
                 className="w-1/2 px-3 py-3 border border-[#e2e8f0] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0284c7] focus:border-transparent"
               />
             </div>
@@ -413,7 +428,8 @@ const PropertySearch = () => {
               {totalProperties} properties found
               {totalPages > 1 && (
                 <span className="ml-2">
-                  (Showing {startIndex + 1}-{Math.min(endIndex, totalProperties)} of {totalProperties})
+                  (Showing {startIndex + 1}-
+                  {Math.min(endIndex, totalProperties)} of {totalProperties})
                 </span>
               )}
             </p>
@@ -503,7 +519,9 @@ const PropertySearch = () => {
           <div className="bg-white rounded-lg shadow-sm p-4">
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
               <div className="text-sm text-[#64748b]">
-                Showing {startIndex + 1} to {Math.min(endIndex, totalProperties)} of {totalProperties} properties
+                Showing {startIndex + 1} to{" "}
+                {Math.min(endIndex, totalProperties)} of {totalProperties}{" "}
+                properties
               </div>
 
               <div className="flex items-center gap-2">
@@ -524,14 +542,17 @@ const PropertySearch = () => {
                   {[...Array(totalPages)].map((_, index) => {
                     const page = index + 1;
                     const isActive = page === currentPage;
-                    
-                    const shouldShow = 
-                      page === 1 || 
-                      page === totalPages || 
+
+                    const shouldShow =
+                      page === 1 ||
+                      page === totalPages ||
                       (page >= currentPage - 1 && page <= currentPage + 1);
 
                     if (!shouldShow) {
-                      if (page === currentPage - 2 || page === currentPage + 2) {
+                      if (
+                        page === currentPage - 2 ||
+                        page === currentPage + 2
+                      ) {
                         return (
                           <span key={page} className="px-2 text-[#64748b]">
                             ...
