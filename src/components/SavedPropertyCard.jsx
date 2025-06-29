@@ -7,11 +7,11 @@ import {
   FaRulerCombined,
 } from "react-icons/fa";
 
-const SavedPropertyCard = ({ 
-  property, 
-  viewMode = "grid", 
-  onToggleSave, 
-  onScheduleTour 
+const SavedPropertyCard = ({
+  property,
+  viewMode = "grid",
+  onToggleSave,
+  onScheduleTour,
 }) => {
   return (
     <div
@@ -43,11 +43,9 @@ const SavedPropertyCard = ({
       {/* Property Details */}
       <div className="p-4 flex-1">
         <div className="flex justify-between items-start mb-2">
-          <h3 className="text-xl font-bold text-[#091a2b]">
-            {property.price}
-          </h3>
+          <h3 className="text-xl font-bold text-[#091a2b]">{property.price}</h3>
         </div>
-        
+
         <p className="text-[#64748b] text-sm mb-1">{property.type}</p>
         <p className="text-[#64748b] text-sm mb-3">{property.address}</p>
 
@@ -65,7 +63,7 @@ const SavedPropertyCard = ({
         </div>
 
         {/* Schedule Tour Button */}
-        <button 
+        <button
           onClick={() => onScheduleTour && onScheduleTour(property)}
           className="w-full bg-[#0284c7] text-white py-2 px-4 rounded-lg hover:bg-[#0369a1] transition-colors font-medium"
         >

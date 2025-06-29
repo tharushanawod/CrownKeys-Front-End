@@ -90,7 +90,7 @@ const SavedProperties = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [properties, setProperties] = useState(savedPropertiesData);
   const [profileOpen, setProfileOpen] = useState(false);
-  
+
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const propertiesPerPage = 6;
@@ -128,7 +128,7 @@ const SavedProperties = () => {
 
   const handleScheduleTour = (property) => {
     // Handle schedule tour functionality
-    console.log('Schedule tour for:', property);
+    console.log("Schedule tour for:", property);
     // You can add navigation to tour scheduling page or open a modal
   };
 
@@ -180,7 +180,8 @@ const SavedProperties = () => {
             You have {totalProperties} saved properties
             {totalPages > 1 && (
               <span className="ml-2">
-                (Showing {startIndex + 1}-{Math.min(endIndex, totalProperties)} of {totalProperties})
+                (Showing {startIndex + 1}-{Math.min(endIndex, totalProperties)}{" "}
+                of {totalProperties})
               </span>
             )}
           </p>
@@ -266,7 +267,9 @@ const SavedProperties = () => {
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
               {/* Page Info */}
               <div className="text-sm text-[#64748b]">
-                Showing {startIndex + 1} to {Math.min(endIndex, totalProperties)} of {totalProperties} properties
+                Showing {startIndex + 1} to{" "}
+                {Math.min(endIndex, totalProperties)} of {totalProperties}{" "}
+                properties
               </div>
 
               {/* Pagination Controls */}
@@ -290,16 +293,19 @@ const SavedProperties = () => {
                   {[...Array(totalPages)].map((_, index) => {
                     const page = index + 1;
                     const isActive = page === currentPage;
-                    
+
                     // Show first page, last page, current page, and pages around current
-                    const shouldShow = 
-                      page === 1 || 
-                      page === totalPages || 
+                    const shouldShow =
+                      page === 1 ||
+                      page === totalPages ||
                       (page >= currentPage - 1 && page <= currentPage + 1);
 
                     if (!shouldShow) {
                       // Show ellipsis for gaps
-                      if (page === currentPage - 2 || page === currentPage + 2) {
+                      if (
+                        page === currentPage - 2 ||
+                        page === currentPage + 2
+                      ) {
                         return (
                           <span key={page} className="px-2 text-[#64748b]">
                             ...
