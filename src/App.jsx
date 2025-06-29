@@ -25,6 +25,9 @@ const Offers = lazy(() => import("./pages/Owner/Offers"));
 const Analytics = lazy(() => import("./pages/Owner/Analytics"));
 const Financial = lazy(() => import("./pages/Owner/Financial"));
 const AgentDashboard = lazy(() => import("./pages/Agent/AgentDashboard"));
+const AgentProperties = lazy(() => import("./pages/Agent/AgentProperties"));
+const BuyerDashboard = lazy(() => import("./pages/Buyer/BuyerDashboard"));
+const SavedProperties = lazy(() => import("./pages/Buyer/SavedProperties"));
 
 
 function App() {
@@ -55,6 +58,10 @@ function App() {
           <Route path="/owner/analytics" element={<Analytics />} />
           <Route path="/owner/financial" element={<Financial />} />
           <Route path="/agent/dashboard" element={<AgentDashboard />} />
+          <Route path="/agent/listings" element={<AgentProperties />} />
+          <Route path="/buyer/dashboard" element={<BuyerDashboard />} />
+          <Route path="/buyer/favorites" element={<SavedProperties />} />
+
         </Routes>
       </Suspense>
     </Router>

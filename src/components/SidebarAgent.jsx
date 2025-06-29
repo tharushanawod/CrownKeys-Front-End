@@ -11,6 +11,7 @@ import {
   FaChevronLeft,
   FaChevronRight,
   FaArrowUp,
+  FaSignOutAlt,
 } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 
@@ -77,6 +78,12 @@ const SidebarAgent = () => {
           >
             <FaArrowUp /> Upgrade to Pro
           </Link>
+        </div>
+        <div className="flex-1" />
+        <div className="px-4 mt-8">
+          <button className="w-full flex items-center gap-2 bg-red-50 text-[#a8aeaf] hover:text-red-600 font-semibold py-2 rounded-lg transition-colors justify-center">
+            <FaSignOutAlt className="text-lg" /> Logout
+          </button>
         </div>
         <div className="px-4 mt-8 text-xs text-[#a8aeaf]">
           <p className="mb-2 font-semibold">Need Help?</p>
