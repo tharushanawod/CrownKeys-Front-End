@@ -4,9 +4,8 @@ import { Suspense, lazy } from "react";
 import Loader from "../components/Loader";
 
 // Lazy load public pages
-const LandingPage = lazy(() => import("../pages/landing/LandingPage"));
+
 const Landing = lazy(() => import("../pages/landing/landing"));
-const Home = lazy(() => import("../pages/landing/Home"));
 const Login = lazy(() => import("../pages/auth/Login"));
 const SignUp = lazy(() => import("../pages/auth/SignUp"));
 const Contact = lazy(() => import("../pages/Contact"));
@@ -30,8 +29,6 @@ const GeneralRoutes = () => {
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<Landing />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/landing" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/contact" element={<Contact />} />

@@ -64,7 +64,8 @@ const SignUp = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.firstName.trim()) newErrors.firstName = "First name is required";
+    if (!formData.firstName.trim())
+      newErrors.firstName = "First name is required";
     if (!formData.lastName.trim()) newErrors.lastName = "Last name is required";
     if (!formData.email.trim()) newErrors.email = "Email is required";
     else if (!/\S+@\S+\.\S+/.test(formData.email))
@@ -93,41 +94,39 @@ const SignUp = () => {
 
     setIsLoading(true);
     setErrors({});
-  
-      try {
-        // Replace the URL below with your actual signup endpoint
-        
-        const response = await axios.post('http://localhost:5000/api/auth/register', formData);
-        console.log("Signup successful:", response.data);
-        setShowSuccessPopup(true);
 
-        setTimeout(() => {
-          navigate("/login", {
-            state: {
-              message: "Registration successful! Please log in to continue.",
-              email: formData.email,
-            },
-          });
-        }, 3000);
-        // Optionally, handle redirect or show success message here
-      } catch (error) {
-        if (error.response && error.response.data && error.response.data.errors) {
-          // If your backend sends validation errors in this format
-          setErrors(error.response.data.errors);
-        } 
-        else if (error.response?.data?.message) {
-          console.log(error.response.data); // Show general error
-        }
-        
-        else {
-          // Handle generic error
-          console.error("Signup error:", error);
-        }
+    try {
+      // Replace the URL below with your actual signup endpoint
+
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/register",
+        formData
+      );
+      console.log("Signup successful:", response.data);
+      setShowSuccessPopup(true);
+
+      setTimeout(() => {
+        navigate("/login", {
+          state: {
+            message: "Registration successful! Please log in to continue.",
+            email: formData.email,
+          },
+        });
+      }, 3000);
+      // Optionally, handle redirect or show success message here
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.errors) {
+        // If your backend sends validation errors in this format
+        setErrors(error.response.data.errors);
+      } else if (error.response?.data?.message) {
+        console.log(error.response.data); // Show general error
+      } else {
+        // Handle generic error
+        console.error("Signup error:", error);
       }
-      finally {
-        setIsLoading(false);
-      }
-    
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Password strength calculation
@@ -189,8 +188,7 @@ const SignUp = () => {
         backgroundPosition: "center",
       }}
     >
-          
-          {/* Success Popup */}
+      {/* Success Popup */}
       {showSuccessPopup && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-8 mx-4 max-w-sm w-full text-center shadow-2xl">
@@ -269,8 +267,8 @@ const SignUp = () => {
                   }
                   className={`flex flex-col items-center justify-center p-4 rounded-lg border-2 transition-all duration-200 ${
                     formData.userRole === role.id
-                      ? "border-[#005163] bg-[#005163] text-white"
-                      : "border-gray-200 hover:border-[#005163] text-[#3b4876]"
+                      ? "border-[var(--color-button-primary)] bg-[var(--color-button-primary)] text-white"
+                      : "border-gray-200 hover:border-[var(--color-button-primary)] text-[var(--color-primary)]"
                   }`}
                 >
                   {role.icon}
@@ -508,16 +506,16 @@ const SignUp = () => {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 type="submit"
-                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#005163] hover:bg-[#091a2b] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#005163] transition-colors duration-300"
+                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[var(--color-button-primary)] hover:bg-[var(--color-button-secondary)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-button-primary)] transition-colors duration-300"
               >
                 {isLoading ? (
-                    <>
-                      <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-2"></div>
-                      Registering...
-                    </>
-                  ) : (
-                    "Create Account"
-                  )}
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-2"></div>
+                    Registering...
+                  </>
+                ) : (
+                  "Create Account"
+                )}
               </motion.button>
             </div>
           </form>

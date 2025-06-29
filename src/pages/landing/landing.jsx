@@ -5,11 +5,6 @@ import {
   FaHome,
   FaBuilding,
   FaMapMarkedAlt,
-  FaPhone,
-  FaFacebook,
-  FaTwitter,
-  FaInstagram,
-  FaLinkedin,
   FaFire,
   FaClock,
   FaTag,
@@ -17,15 +12,12 @@ import {
 } from "react-icons/fa";
 import {
   MdLocationOn,
-  MdEmail,
-  MdPhone,
   MdArrowForwardIos,
   MdArrowBackIos,
 } from "react-icons/md";
 import Header from "../Components/Header";
 import { motion, AnimatePresence } from "framer-motion";
 import Footer from "../Components/Footer";
-import CircularGallery from "../Components/CircularGallery";
 
 // Animation variants
 const fadeInUp = {
@@ -123,27 +115,8 @@ const pulseAnimation = {
 };
 
 const Landing = () => {
-  const [currentHeroIndex, setCurrentHeroIndex] = useState(0);
   const [currentListingIndex, setCurrentListingIndex] = useState(0);
-
-  // Hero Section Images
-  const heroImages = [
-    {
-      url: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80",
-      title: "Luxury Living",
-      subtitle: "Discover Your Dream Home",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80",
-      title: "Modern Apartments",
-      subtitle: "Urban Living at its Finest",
-    },
-    {
-      url: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80",
-      title: "Premium Properties",
-      subtitle: "Your Perfect Home Awaits",
-    },
-  ];
+  const [currentAdIndex, setCurrentAdIndex] = useState(0);
 
   // Latest Listings Data
   const latestListings = [
@@ -235,6 +208,34 @@ const Landing = () => {
     },
   ];
 
+  // Advertisement data
+  const advertisements = [
+    {
+      id: 1,
+      image:
+        "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=1926&q=80",
+      title: "Luxury Real Estate Financing",
+      subtitle: "Get the best rates for your dream home",
+      cta: "Learn More",
+    },
+    {
+      id: 2,
+      image:
+        "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=1926&q=80",
+      title: "Premium Property Insurance",
+      subtitle: "Protect your investment with comprehensive coverage",
+      cta: "Get Quote",
+    },
+    {
+      id: 3,
+      image:
+        "https://images.unsplash.com/photo-1582407947304-fd86f028f716?ixlib=rb-4.0.3&auto=format&fit=crop&w=1926&q=80",
+      title: "Interior Design Services",
+      subtitle: "Transform your space with expert design",
+      cta: "Explore",
+    },
+  ];
+
   // Property Types
   const propertyTypes = [
     {
@@ -260,13 +261,13 @@ const Landing = () => {
     },
   ];
 
-  // Auto-scroll hero images
+  // Auto-scroll advertisements
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentHeroIndex((prev) =>
-        prev === heroImages.length - 1 ? 0 : prev + 1
+      setCurrentAdIndex((prev) =>
+        prev === advertisements.length - 1 ? 0 : prev + 1
       );
-    }, 5000);
+    }, 4000);
     return () => clearInterval(timer);
   }, []);
 
@@ -285,45 +286,44 @@ const Landing = () => {
     });
   };
 
+  // Navigation functions for advertisement carousel
+  const nextAd = () => {
+    setCurrentAdIndex((prev) =>
+      prev === advertisements.length - 1 ? 0 : prev + 1
+    );
+  };
+
+  const prevAd = () => {
+    setCurrentAdIndex((prev) =>
+      prev === 0 ? advertisements.length - 1 : prev - 1
+    );
+  };
+
   return (
     <div className="min-h-screen">
       <Header />
 
-      {/* Hero Section with Carousel */}
-      <section
-        className="relative h-screen w-full overflow-hidden"
-        style={{ backgroundColor: "#000000" }}
-      >
-        <AnimatePresence mode="wait">
-          {heroImages.map(
-            (image, index) =>
-              index === currentHeroIndex && (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.4 }}
-                  className="absolute inset-0"
-                  style={{
-                    backgroundImage: `url(${image.url})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    backgroundRepeat: "no-repeat",
-                    height: "100%",
-                    width: "100%",
-                  }}
-                >
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 0.4 }}
-                    transition={{ duration: 1 }}
-                    className="absolute inset-0 bg-black"
-                  />
-                </motion.div>
-              )
-          )}
-        </AnimatePresence>
+      {/* Hero Section with Video Background */}
+      <section className="relative h-screen w-full overflow-hidden">
+        {/* Background Video */}
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover z-0"
+        >
+          <source src="/Videos/estate.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+
+        {/* Dark Overlay for Better Text Readability */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.4 }}
+          transition={{ duration: 1 }}
+          className="absolute inset-0 bg-black z-10"
+        />
 
         {/* Hero Content */}
         <motion.div
@@ -335,90 +335,101 @@ const Landing = () => {
           <div className="container mx-auto px-4">
             <motion.div
               variants={heroContentVariants}
-              className="max-w-3xl mx-auto text-center text-white"
+              className="max-w-4xl mx-auto text-center text-white"
             >
               <motion.h1
                 variants={fadeInUp}
-                className="text-4xl md:text-6xl font-bold mb-4"
+                className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 drop-shadow-2xl text-shadow-lg"
               >
-                {heroImages[currentHeroIndex].title}
+                Find Your Dream Property
               </motion.h1>
               <motion.p
                 variants={fadeInUp}
-                className="text-xl md:text-2xl mb-8"
+                className="text-xl md:text-2xl mb-8 drop-shadow-lg text-shadow-md text-gray-100"
               >
-                {heroImages[currentHeroIndex].subtitle}
+                Discover Luxury Living with CrownKeys - Sri Lanka's Premier Real
+                Estate Platform
               </motion.p>
 
-              {/* Search Bar */}
+              {/* Compact Search Bar */}
               <motion.div
                 variants={searchBarVariants}
-                className="bg-white/90 backdrop-blur-sm rounded-lg p-4 shadow-lg text-black"
+                className="bg-white/85 backdrop-blur-md rounded-lg p-3 shadow-2xl text-black border border-white/20 max-w-3xl mx-auto"
               >
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-5 gap-2">
                   <motion.div variants={slideIn} className="relative">
                     <input
                       type="text"
-                      placeholder="Location"
-                      className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                      placeholder="Location..."
+                      className="w-full px-2.5 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-white text-xs"
                     />
-                    <MdLocationOn className="absolute right-3 top-3 text-gray-400" />
+                    <MdLocationOn className="absolute right-2 top-2.5 text-gray-400 text-xs" />
                   </motion.div>
-                  <motion.select
-                    variants={slideIn}
-                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+
+                  <motion.div variants={slideIn}>
+                    <select className="w-full px-2.5 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-white text-xs">
+                      <option value="">Property Type</option>
+                      <option value="house">House</option>
+                      <option value="apartment">Apartment</option>
+                      <option value="villa">Villa</option>
+                      <option value="land">Land</option>
+                      <option value="commercial">Commercial</option>
+                    </select>
+                  </motion.div>
+
+                  <motion.div variants={slideIn}>
+                    <input
+                      type="text"
+                      placeholder="Min Price..."
+                      className="w-full px-2.5 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-white text-xs"
+                    />
+                  </motion.div>
+
+                  <motion.div variants={slideIn}>
+                    <input
+                      type="text"
+                      placeholder="Max Price..."
+                      className="w-full px-2.5 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-white text-xs"
+                    />
+                  </motion.div>
+
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-3 py-2 rounded-md font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 flex items-center justify-center shadow-lg text-xs"
                   >
-                    <option value="">Property Type</option>
-                    <option value="house">House</option>
-                    <option value="apartment">Apartment</option>
-                    <option value="land">Land</option>
-                    <option value="commercial">Commercial</option>
-                  </motion.select>
-                  <motion.input
-                    variants={slideIn}
-                    type="number"
-                    placeholder="Min Price"
-                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-                  />
-                  <motion.input
-                    variants={slideIn}
-                    type="number"
-                    placeholder="Max Price"
-                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-                  />
+                    <FaSearch className="mr-1" />
+                    Search
+                  </motion.button>
                 </div>
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="w-full mt-4 bg-primary text-white px-6 py-3 rounded-lg hover:bg-secondary transition-colors flex items-center justify-center"
+
+                {/* Quick Filters - More Compact */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.8 }}
+                  className="flex flex-wrap gap-1.5 mt-2 justify-center"
                 >
-                  <FaSearch className="mr-2" />
-                  Search Properties
-                </motion.button>
+                  {[
+                    "Under 50M",
+                    "Luxury",
+                    "Apartments",
+                    "Villas",
+                    "Commercial",
+                  ].map((filter, index) => (
+                    <motion.button
+                      key={index}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="px-2.5 py-0.5 text-[10px] bg-gray-100 hover:bg-blue-100 text-gray-700 hover:text-blue-700 rounded-full transition-colors duration-200 border border-gray-200"
+                    >
+                      {filter}
+                    </motion.button>
+                  ))}
+                </motion.div>
               </motion.div>
             </motion.div>
           </div>
-        </motion.div>
-
-        {/* Hero Carousel Indicators */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8 }}
-          className="absolute bottom-8 left-0 right-0 flex justify-center space-x-2 z-20"
-        >
-          {heroImages.map((_, index) => (
-            <motion.button
-              key={index}
-              whileHover={{ scale: 1.2 }}
-              whileTap={{ scale: 0.9 }}
-              className={`w-3 h-3 rounded-full transition-colors ${
-                index === currentHeroIndex ? "bg-primary" : "bg-white"
-              }`}
-              onClick={() => setCurrentHeroIndex(index)}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
         </motion.div>
       </section>
 
@@ -447,7 +458,7 @@ const Landing = () => {
               >
                 <motion.div
                   whileHover={{ scale: 1.1, rotate: 5 }}
-                  className="text-secondary mb-4 flex justify-center"
+                  className="text-button-primary mb-4 flex justify-center"
                 >
                   {type.icon}
                 </motion.div>
@@ -545,11 +556,11 @@ const Landing = () => {
                         <h3 className="text-xl font-semibold">
                           {listing.title}
                         </h3>
-                        <span className="bg-green-100 text-green-800 text-sm px-2 py-1 rounded">
+                        <span className="bg-blue-100 text-blue-800 text-sm px-2 py-1 rounded">
                           {listing.type}
                         </span>
                       </div>
-                      <p className="text-secondary font-bold mb-2">
+                      <p className="text-button-primary font-bold mb-2">
                         {listing.price}
                       </p>
                       <p className="text-gray-600 mb-4">{listing.location}</p>
@@ -671,7 +682,7 @@ const Landing = () => {
                         variants={pulseAnimation}
                         initial="initial"
                         animate="animate"
-                        className="bg-green-100 text-green-800 text-sm px-2 py-1 rounded-full flex items-center"
+                        className="bg-blue-100 text-blue-800 text-sm px-2 py-1 rounded-full flex items-center"
                       >
                         <FaPercent className="mr-1" />
                         {sale.discount}
@@ -753,29 +764,135 @@ const Landing = () => {
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
         variants={staggerContainer}
-        className="py-16 bg-gray-50"
+        className="py-0 bg-white"
       >
-        <div className="container mx-auto px-4">
-          <motion.div variants={fadeInUp} className="text-center mb-12">
-            <motion.h2
-              whileHover={{ scale: 1.02 }}
-              className="text-3xl md:text-4xl font-bold text-gray-800 mb-4"
-            >
-              Advertisements
-            </motion.h2>
-            <motion.p
-              variants={fadeInUp}
-              className="text-gray-600 max-w-2xl mx-auto"
-            >
-              Discover our featured properties and exclusive deals
-            </motion.p>
+        <div className="relative w-full overflow-hidden">
+          <motion.div variants={fadeInUp} className="text-center mb-8 px-4">
+            <h2 className="text-3xl font-bold mb-4">Featured Partners</h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Discover exclusive offers from our trusted partners
+            </p>
           </motion.div>
 
+          {/* Advertisement Carousel */}
           <motion.div
             variants={fadeInUp}
-            className="bg-white rounded-xl shadow-lg p-6 md:p-8"
+            className="relative h-64 md:h-80 lg:h-96 w-full"
           >
-            <CircularGallery />
+            <AnimatePresence mode="wait">
+              {advertisements.map(
+                (ad, index) =>
+                  index === currentAdIndex && (
+                    <motion.div
+                      key={ad.id}
+                      initial={{ opacity: 0, x: 100 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -100 }}
+                      transition={{ duration: 0.6, ease: "easeInOut" }}
+                      className="absolute inset-0 w-full h-full"
+                    >
+                      <div
+                        className="w-full h-full bg-cover bg-center bg-no-repeat relative"
+                        style={{ backgroundImage: `url(${ad.image})` }}
+                      >
+                        {/* Overlay */}
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 0.6 }}
+                          className="absolute inset-0 bg-black"
+                        />
+
+                        {/* Content */}
+                        <motion.div
+                          initial={{ opacity: 0, y: 30 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.3, duration: 0.6 }}
+                          className="relative z-10 h-full flex items-center justify-center"
+                        >
+                          <div className="text-center text-white px-4 max-w-4xl">
+                            <motion.h3
+                              initial={{ opacity: 0, y: 20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ delay: 0.4 }}
+                              className="text-3xl md:text-5xl font-bold mb-4"
+                            >
+                              {ad.title}
+                            </motion.h3>
+                            <motion.p
+                              initial={{ opacity: 0, y: 20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ delay: 0.5 }}
+                              className="text-lg md:text-xl mb-8 text-gray-200"
+                            >
+                              {ad.subtitle}
+                            </motion.p>
+                            <motion.button
+                              initial={{ opacity: 0, scale: 0.8 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              transition={{ delay: 0.6 }}
+                              whileHover={{ scale: 1.05, y: -2 }}
+                              whileTap={{ scale: 0.95 }}
+                              className="bg-button-primary text-white px-8 py-3 rounded-lg font-semibold hover:bg-button-secondary transition-all duration-300 shadow-lg hover:shadow-xl"
+                            >
+                              {ad.cta}
+                            </motion.button>
+                          </div>
+                        </motion.div>
+                      </div>
+                    </motion.div>
+                  )
+              )}
+            </AnimatePresence>
+
+            {/* Carousel Indicators */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.8 }}
+              className="absolute bottom-4 left-0 right-0 flex justify-center space-x-2 z-20"
+            >
+              {advertisements.map((_, index) => (
+                <motion.button
+                  key={index}
+                  whileHover={{ scale: 1.2 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={() => setCurrentAdIndex(index)}
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                    index === currentAdIndex
+                      ? "bg-button-primary scale-110"
+                      : "bg-white/60"
+                  }`}
+                  aria-label={`Go to advertisement ${index + 1}`}
+                />
+              ))}
+            </motion.div>
+
+            {/* Navigation Arrows */}
+            <motion.button
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.7 }}
+              whileHover={{ scale: 1.1, x: -5 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={prevAd}
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 backdrop-blur-sm text-white p-3 rounded-full hover:bg-white/30 transition-all duration-300"
+              aria-label="Previous advertisement"
+            >
+              <MdArrowBackIos className="text-xl" />
+            </motion.button>
+
+            <motion.button
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.7 }}
+              whileHover={{ scale: 1.1, x: 5 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={nextAd}
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 backdrop-blur-sm text-white p-3 rounded-full hover:bg-white/30 transition-all duration-300"
+              aria-label="Next advertisement"
+            >
+              <MdArrowForwardIos className="text-xl" />
+            </motion.button>
           </motion.div>
         </div>
       </motion.section>
@@ -798,19 +915,21 @@ const Landing = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
-                icon: <FaBuilding className="text-2xl text-secondary" />,
+                icon: <FaBuilding className="text-2xl text-button-primary" />,
                 title: "Expert Guidance",
                 description:
                   "Our experienced agents provide expert guidance throughout your real estate journey.",
               },
               {
-                icon: <FaMapMarkedAlt className="text-2xl text-secondary" />,
+                icon: (
+                  <FaMapMarkedAlt className="text-2xl text-button-primary" />
+                ),
                 title: "Prime Locations",
                 description:
                   "Access to exclusive properties in the most sought-after locations.",
               },
               {
-                icon: <FaHome className="text-2xl text-secondary" />,
+                icon: <FaHome className="text-2xl text-button-primary" />,
                 title: "Quality Service",
                 description:
                   "Dedicated to providing exceptional service and support to our clients.",
@@ -854,7 +973,7 @@ const Landing = () => {
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
         variants={staggerContainer}
-        className="py-16 bg-primary"
+        className="py-16 bg-button-secondary"
       >
         <div className="container mx-auto px-4">
           <motion.div
@@ -879,13 +998,13 @@ const Landing = () => {
                 whileFocus={{ scale: 1.02 }}
                 type="email"
                 placeholder="Enter your email"
-                className="flex-1 px-4 py-3 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary"
+                className="flex-1 px-4 py-3 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-button-primary"
               />
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 type="submit"
-                className="bg-white text-secondary px-8 py-3 rounded-lg font-semibold hover:bg-green-50 transition-colors"
+                className="bg-white text-button-primary px-8 py-3 rounded-lg font-semibold hover:bg-green-50 transition-colors"
               >
                 Subscribe
               </motion.button>

@@ -68,13 +68,13 @@ function Header() {
             </Link>
             <Link
               to={"/signup"}
-              className="bg-primary text-white px-6 py-2 rounded-full hover:bg-secondary transition-colors"
+              className="bg-button-primary text-white px-6 py-2 rounded-full hover:bg-button-secondary transition-colors"
             >
               Sign Up
             </Link>
             <Link
               to={"/login"}
-              className="border border-primary border-2 text-primary px-6 py-2 rounded-full hover:border-secondary hover:bg-secondary-low transition-colors"
+              className="border border-primary border-2 text-primary px-6 py-2 rounded-full hover:border-secondary hover:bg-button-secondary-low transition-colors"
             >
               Login
             </Link>
@@ -107,13 +107,13 @@ function Header() {
             <div className="flex flex-col space-y-2 pt-2">
               <Link
                 to={"/signup"}
-                className="bg-primary text-white px-6 py-2 rounded-full hover:bg-secondary transition-colors text-center"
+                className="bg-button-primary text-white px-6 py-2 rounded-full hover:bg-button-secondary transition-colors text-center"
               >
                 Sign Up
               </Link>{" "}
               <Link
                 to={"/login"}
-                className="border-2 border-primary text-primary px-6 py-2 rounded-full hover:border-secondary hover:bg-secondary-low transition-colors text-center"
+                className="border-2 border-primary text-primary px-6 py-2 rounded-full hover:border-secondary hover:bg-button-secondary-low transition-colors text-center"
               >
                 Login
               </Link>

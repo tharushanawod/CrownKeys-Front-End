@@ -50,13 +50,16 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors({}); // Clear previous errors
-  
+
     if (validateForm()) {
       setIsLoading(true);
       try {
-        const response = await axios.post('http://localhost:5000/api/auth/login', formData);
+        const response = await axios.post(
+          "http://localhost:5000/api/auth/login",
+          formData
+        );
         console.log("Login successful:", response.data);
-  
+
         // Redirect to dashboard after success
         setTimeout(() => {
           navigate("/dashboard", {
@@ -66,27 +69,25 @@ const Login = () => {
             },
           });
         }, 1000);
-  
       } catch (error) {
         const newErrors = {};
         const message = error.response?.data?.message || "Login failed";
-  
+
         if (message.includes("Invalid credentials")) {
           newErrors.password = "Invalid email or password"; // More user-friendly
-          newErrors.email = "Invalid email or password";   // Show same error for both
+          newErrors.email = "Invalid email or password"; // Show same error for both
         } else if (message.includes("email")) {
           newErrors.email = message;
         } else {
           newErrors.general = message;
         }
-  
+
         setErrors(newErrors);
       } finally {
         setIsLoading(false);
       }
     }
   };
-  
 
   return (
     <div
@@ -225,7 +226,7 @@ const Login = () => {
                 whileTap={{ scale: isLoading ? 1 : 0.98 }}
                 type="submit"
                 disabled={isLoading}
-                className={`w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#005163] hover:bg-[#091a2b] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#005163] transition-colors duration-300 ${
+                className={`w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[var(--color-button-primary)] hover:bg-[var(--color-button-secondary)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-button-primary)] transition-colors duration-300 ${
                   isLoading ? "opacity-75 cursor-not-allowed" : ""
                 }`}
               >
