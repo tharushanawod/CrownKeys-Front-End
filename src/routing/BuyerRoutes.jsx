@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Routes, Route, Outlet } from "react-router-dom";
 import { FaBell, FaUserCircle, FaUser, FaSignOutAlt } from "react-icons/fa";
 import SidebarBuyer from "../components/SidebarBuyer";
+import { SidebarProvider, useSidebar } from "../contexts/SidebarContext";
 
 // Import Buyer pages
 import BuyerDashboard from "../pages/Buyer/BuyerDashboard";
@@ -11,6 +12,7 @@ import Profile from "../components/Profile";
 
 const BuyerLayout = () => {
   const [profileOpen, setProfileOpen] = useState(false);
+  const { collapsed } = useSidebar();
 
   return (
     <div className="min-h-screen bg-[#f8fafc] flex">
@@ -18,7 +20,11 @@ const BuyerLayout = () => {
       <SidebarBuyer />
 
       {/* Main Content */}
-      <div className="flex-1 lg:ml-64">
+      <div
+        className={`flex-1 transition-all duration-300 ${
+          collapsed ? "lg:ml-16" : "lg:ml-64"
+        }`}
+      >
         {/* Header */}
         <div className="bg-white shadow-sm p-4">
           <div className="flex justify-end items-center">
@@ -29,11 +35,11 @@ const BuyerLayout = () => {
             <div className="relative">
               <button
                 className="flex items-center gap-2 p-2 rounded-full hover:bg-[#e0f2fe] focus:outline-none"
-                onMouseEnter={() => setProfileOpen(true)}
-                onMouseLeave={() =>
-                  setTimeout(() => setProfileOpen(false), 200)
-                }
-                onClick={() => setProfileOpen((open) => !open)}
+                onMouseDown={() => setProfileOpen(true)}
+                // onMouseLeave={() =>
+                //   setTimeout(() => setProfileOpen(false), 200)
+                // }
+                // onClick={() => setProfileOpen((open) => !open)}
               >
                 <FaUserCircle className="text-3xl text-[#0284c7]" />
                 <span className="text-[#091a2b] font-medium">John Doe</span>
@@ -120,27 +126,29 @@ const BuyerProfileWrapper = () => {
 
 const BuyerRoutes = () => {
   return (
-    <Routes>
-      <Route path="/" element={<BuyerLayout />}>
-        <Route
-          index
-          element={
-            <div className="text-center py-12">
-              <h2 className="text-2xl font-bold text-[#091a2b] mb-4">
-                Welcome to Buyer Portal
-              </h2>
-              <p className="text-[#64748b]">
-                Select an option from the sidebar to get started.
-              </p>
-            </div>
-          }
-        />
-        <Route path="dashboard" element={<BuyerDashboard />} />
-        <Route path="search" element={<PropertySearch />} />
-        <Route path="favorites" element={<SavedProperties />} />
-        <Route path="profile" element={<BuyerProfileWrapper />} />
-      </Route>
-    </Routes>
+    <SidebarProvider>
+      <Routes>
+        <Route path="/" element={<BuyerLayout />}>
+          <Route
+            index
+            element={
+              <div className="text-center py-12">
+                <h2 className="text-2xl font-bold text-[#091a2b] mb-4">
+                  Welcome to Buyer Portal
+                </h2>
+                <p className="text-[#64748b]">
+                  Select an option from the sidebar to get started.
+                </p>
+              </div>
+            }
+          />
+          <Route path="dashboard" element={<BuyerDashboard />} />
+          <Route path="search" element={<PropertySearch />} />
+          <Route path="favorites" element={<SavedProperties />} />
+          <Route path="profile" element={<BuyerProfileWrapper />} />
+        </Route>
+      </Routes>
+    </SidebarProvider>
   );
 };
 

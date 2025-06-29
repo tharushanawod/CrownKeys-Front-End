@@ -14,6 +14,7 @@ import {
   FaSignOutAlt,
 } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
+import { useSidebar } from "../contexts/SidebarContext";
 
 const navLinks = [
   { name: "Dashboard", icon: <FaHome />, path: "/owner/dashboard" },
@@ -28,6 +29,7 @@ const navLinks = [
 
 const SidebarOwner = () => {
   const [open, setOpen] = useState(false);
+  const { collapsed, setCollapsed } = useSidebar();
   const location = useLocation();
 
   return (
@@ -42,7 +44,7 @@ const SidebarOwner = () => {
       </button>
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-30 transform transition-transform duration-300 lg:translate-x-0 ${
+        className={`fixed top-0 left-0 h-screen w-64 bg-white shadow-lg z-30 transform transition-transform duration-300 lg:translate-x-0 ${
           open ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         }`}
       >
