@@ -11,7 +11,7 @@ const SavedPropertyCard = ({
   property,
   viewMode = "grid",
   onToggleSave,
-  onScheduleTour,
+  onViewDetails,
 }) => {
   return (
     <div
@@ -62,12 +62,12 @@ const SavedPropertyCard = ({
           </span>
         </div>
 
-        {/* Schedule Tour Button */}
+        {/* View Details Button */}
         <button
-          onClick={() => onScheduleTour && onScheduleTour(property)}
+          onClick={() => onViewDetails && onViewDetails(property)}
           className="w-full bg-[#0284c7] text-white py-2 px-4 rounded-lg hover:bg-[#0369a1] transition-colors font-medium"
         >
-          Schedule Tour
+          View Details
         </button>
       </div>
     </div>

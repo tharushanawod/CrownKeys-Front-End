@@ -18,10 +18,9 @@ const Profile = ({ userType, SidebarComponent, userData, recentActivity }) => {
   const [isEditing, setIsEditing] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#f1f3f4] flex">
-      <SidebarComponent />
-      <div className="flex-1 p-8 ml-64">
-        <div className="max-w-6xl mx-auto">
+    <>
+    <div className="bg-[#f1f3f4] p-4">
+      <div className="max-w-6xl mx-auto">
           {/* Profile Header */}
           <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
             <div className="flex flex-col md:flex-row items-center gap-8">
@@ -428,7 +427,8 @@ const Profile = ({ userType, SidebarComponent, userData, recentActivity }) => {
           </div>
         </div>
       </div>
-    </div>
+      </>
+   
   );
 };
 

@@ -63,7 +63,7 @@ const SidebarBuyer = () => {
         }`}
       >
         {/* Logo */}
-        <div className="flex flex-col items-center py-8 border-b border-gray-100">
+        {/* <div className="flex flex-col items-center py-8 border-b border-gray-100">
           <Link to="/">
             <img
               src="../../public/Images/Common/www.png"
@@ -71,7 +71,7 @@ const SidebarBuyer = () => {
               className="w-full h-15 object-contain cursor-pointer"
             />
           </Link>
-        </div>
+        </div> */}
         {/* Navigation */}
         <nav className="flex-1 px-4 py-6 space-y-1">
           {navLinks.map((link) => (

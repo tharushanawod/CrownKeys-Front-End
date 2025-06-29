@@ -5,10 +5,6 @@ import {
   FaMapMarkerAlt,
   FaThLarge,
   FaList,
-  FaBell,
-  FaUserCircle,
-  FaUser,
-  FaSignOutAlt,
   FaChevronLeft,
   FaChevronRight,
   FaTimes,
@@ -19,7 +15,6 @@ import {
   FaBuilding,
   FaWarehouse,
 } from "react-icons/fa";
-import SidebarBuyer from "../../components/SidebarBuyer";
 import SavedPropertyCard from "../../components/SavedPropertyCard";
 
 const propertyData = [
@@ -137,7 +132,6 @@ const PropertySearch = () => {
   const [properties, setProperties] = useState(propertyData);
   const [viewMode, setViewMode] = useState("grid");
   const [showFilters, setShowFilters] = useState(false);
-  const [profileOpen, setProfileOpen] = useState(false);
 
   // Search and Filter States
   const [searchQuery, setSearchQuery] = useState("");
@@ -218,7 +212,7 @@ const PropertySearch = () => {
   };
 
   const handleScheduleTour = (property) => {
-    console.log("Schedule tour for:", property);
+    console.log("View details for:", property);
   };
 
   const clearFilters = () => {
@@ -249,43 +243,7 @@ const PropertySearch = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] sm:p-4 lg:ml-64">
-      {/* Sidebar */}
-      <SidebarBuyer />
-
-      {/* Top Bar */}
-      <div className="flex justify-end items-center mb-6 bg-white p-4 rounded-lg shadow-sm">
-        <button className="relative p-2 rounded-full hover:bg-[#e0f2fe] focus:outline-none mr-4">
-          <FaBell className="text-2xl text-[#0284c7]" />
-          <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
-        </button>
-        <div className="relative">
-          <button
-            className="flex items-center gap-2 p-2 rounded-full hover:bg-[#e0f2fe] focus:outline-none"
-            onMouseEnter={() => setProfileOpen(true)}
-            onMouseLeave={() => setTimeout(() => setProfileOpen(false), 200)}
-            onClick={() => setProfileOpen((open) => !open)}
-          >
-            <FaUserCircle className="text-3xl text-[#0284c7]" />
-            <span className="text-[#091a2b] font-medium">John Doe</span>
-          </button>
-          {profileOpen && (
-            <div
-              className="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg py-2 z-50 border border-gray-100"
-              onMouseEnter={() => setProfileOpen(true)}
-              onMouseLeave={() => setProfileOpen(false)}
-            >
-              <button className="w-full flex items-center gap-2 px-4 py-2 text-[#091a2b] hover:bg-[#f1f3f4]">
-                <FaUser className="text-lg" /> Profile
-              </button>
-              <button className="w-full flex items-center gap-2 px-4 py-2 text-[#a8aeaf] hover:text-red-600 hover:bg-[#f1f3f4]">
-                <FaSignOutAlt className="text-lg" /> Logout
-              </button>
-            </div>
-          )}
-        </div>
-      </div>
-
+    <div className="bg-[#f8fafc] p-4">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-6">
