@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import SidebarAgent from "../../components/SidebarAgent";
 import PropertiesLayout from "../../components/PropertiesLayout";
 import PropertiesFilter from "../../components/PropertiesFilter";
-import PropertiesGrid from "../../components/PropertiesGrid";
+import AgentPropertiesGrid from "../../components/AgentPropertiesGrid";
 
 const sampleProperties = [
   {
@@ -14,6 +14,9 @@ const sampleProperties = [
     baths: 2,
     area: "1,800 sqft",
     status: "Active",
+    views: 245,
+    inquiries: 18,
+    commission: "3,200",
     image:
       "https://images.unsplash.com/photo-1560184897-6a8c1b1e1c8b?auto=format&fit=crop&w=800&q=80",
   },
@@ -26,6 +29,9 @@ const sampleProperties = [
     baths: 3,
     area: "2,200 sqft",
     status: "Pending",
+    views: 189,
+    inquiries: 12,
+    commission: "4,100",
     image:
       "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
   },
@@ -38,6 +44,9 @@ const sampleProperties = [
     baths: 2,
     area: "2,000 sqft",
     status: "Sold",
+    views: 167,
+    inquiries: 8,
+    commission: "2,750",
     image:
       "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=800&q=80",
   },
@@ -50,6 +59,9 @@ const sampleProperties = [
     baths: 2,
     area: "1,500 sqft",
     status: "Active",
+    views: 298,
+    inquiries: 22,
+    commission: "3,600",
     image:
       "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=800&q=80",
   },
@@ -62,6 +74,9 @@ const sampleProperties = [
     baths: 4,
     area: "3,500 sqft",
     status: "Active",
+    views: 156,
+    inquiries: 15,
+    commission: "5,800",
     image:
       "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=800&q=80",
   },
@@ -74,6 +89,9 @@ const sampleProperties = [
     baths: 3,
     area: "2,000 sqft",
     status: "Pending",
+    views: 203,
+    inquiries: 14,
+    commission: "4,900",
     image:
       "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80",
   },
@@ -86,6 +104,9 @@ const sampleProperties = [
     baths: 2,
     area: "1,200 sqft",
     status: "Active",
+    views: 312,
+    inquiries: 26,
+    commission: "4,500",
     image:
       "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80",
   },
@@ -98,6 +119,9 @@ const sampleProperties = [
     baths: 2.5,
     area: "1,800 sqft",
     status: "Sold",
+    views: 134,
+    inquiries: 9,
+    commission: "3,700",
     image:
       "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80",
   },
@@ -124,7 +148,7 @@ const AgentProperties = () => {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [currentSort, setCurrentSort] = useState("latest");
-  const propertiesPerPage = 6;
+  const propertiesPerPage = 8; // Increased for better grid layout
 
   const filteredProperties = sampleProperties.filter((prop) => {
     const matchesFilter = filter === "All" || prop.status === filter;
@@ -148,9 +172,24 @@ const AgentProperties = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const handlePropertyAction = (property) => {
-    console.log("Agent property action clicked:", property);
-    // Add agent-specific action logic here
+  const handleEdit = (property) => {
+    console.log("Edit property:", property);
+    // Navigate to edit property page or open modal
+  };
+
+  const handleDelete = (property) => {
+    console.log("Delete property:", property);
+    // Show confirmation dialog and delete property
+  };
+
+  const handleViewDetails = (property) => {
+    console.log("View property details:", property);
+    // Navigate to property details page
+  };
+
+  const handleViewAnalytics = (property) => {
+    console.log("View property analytics:", property);
+    // Navigate to analytics page or open modal
   };
 
   const handleSortChange = (sortValue) => {
@@ -172,23 +211,39 @@ const AgentProperties = () => {
   );
 
   return (
-    <PropertiesLayout
-      sidebar={SidebarAgent}
-      title="My Listings"
-      subtitle="Manage your property listings and track their performance"
-      actions={filterActions}
-    >
-      <PropertiesGrid
+    <div className="space-y-6">
+      {/* Header with Filter Actions */}
+      <div className="bg-white rounded-lg shadow-sm p-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+          <div>
+            <h1 className="text-2xl font-bold text-[#091a2b]">My Listings</h1>
+            <p className="text-[#64748b]">
+              Manage your property listings and track their performance
+            </p>
+          </div>
+          <div className="text-sm text-[#64748b]">
+            Total Properties:{" "}
+            <span className="font-semibold text-[#091a2b]">
+              {sampleProperties.length}
+            </span>
+          </div>
+        </div>
+        {filterActions}
+      </div>
+
+      {/* Properties Grid */}
+      <AgentPropertiesGrid
         properties={currentProperties}
-        statusColors={statusColors}
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={handlePageChange}
-        onPropertyAction={handlePropertyAction}
-        showActions={true}
         propertiesPerPage={propertiesPerPage}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+        onViewDetails={handleViewDetails}
+        onViewAnalytics={handleViewAnalytics}
       />
-    </PropertiesLayout>
+    </div>
   );
 };
 
