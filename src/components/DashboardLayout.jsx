@@ -1,4 +1,5 @@
 import React from "react";
+import { useSidebar } from "../contexts/SidebarContext";
 
 const DashboardLayout = ({
   sidebar: Sidebar,
@@ -7,10 +8,16 @@ const DashboardLayout = ({
   subtitle,
   actions,
 }) => {
+  const { collapsed } = useSidebar();
+
   return (
-    <div className="min-h-screen bg-[#f1f3f4] flex">
+    <div className="min-h-screen bg-[#f8fafc] flex">
       <Sidebar />
-      <div className="flex-1 flex flex-col min-w-0 sm:ml-64">
+      <div
+        className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ${
+          collapsed ? "lg:ml-16" : "lg:ml-64"
+        }`}
+      >
         {/* Topbar */}
         <header className="flex items-center justify-between px-4 py-4 bg-white shadow-sm sticky top-0 z-10">
           <div>

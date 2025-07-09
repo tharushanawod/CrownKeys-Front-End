@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Routes, Route, Outlet } from "react-router-dom";
 import { FaBell, FaUserCircle, FaUser, FaSignOutAlt } from "react-icons/fa";
 import SidebarBuyer from "../components/SidebarBuyer";
+import DashboardLayout from "../components/DashboardLayout";
 import { SidebarProvider, useSidebar } from "../contexts/SidebarContext";
 
 // Import Buyer pages
@@ -12,62 +13,73 @@ import Profile from "../components/Profile";
 
 const BuyerLayout = () => {
   const [profileOpen, setProfileOpen] = useState(false);
-  const { collapsed } = useSidebar();
+
+  const dashboardActions = (
+    <>
+      {/* Notifications Bell */}
+      <button className="relative p-2 rounded-full hover:bg-[#e0f2fe] focus:outline-none transition-colors">
+        <FaBell className="text-xl text-[#0284c7]" />
+        <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+      </button>
+
+      {/* Profile Dropdown */}
+      <div className="relative">
+        <button
+          className="flex items-center gap-2 p-2 rounded-full hover:bg-[#e0f2fe] focus:outline-none transition-colors"
+          onClick={() => setProfileOpen(!profileOpen)}
+        >
+          <FaUserCircle className="text-2xl text-[#0284c7]" />
+          <span className="text-[#091a2b] font-medium hidden sm:block">
+            John Doe
+          </span>
+        </button>
+
+        {profileOpen && (
+          <>
+            {/* Overlay to close dropdown */}
+            <div
+              className="fixed inset-0 z-10"
+              onClick={() => setProfileOpen(false)}
+            ></div>
+
+            {/* Dropdown Menu */}
+            <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-20 border border-gray-100">
+              <button
+                className="w-full flex items-center gap-3 px-4 py-2 text-[#091a2b] hover:bg-[#f1f3f4] transition-colors"
+                onClick={() => {
+                  setProfileOpen(false);
+                  // Navigate to profile page
+                }}
+              >
+                <FaUser className="text-lg text-[#0284c7]" />
+                Profile
+              </button>
+              <button
+                className="w-full flex items-center gap-3 px-4 py-2 text-[#a8aeaf] hover:text-red-600 hover:bg-[#f1f3f4] transition-colors"
+                onClick={() => {
+                  setProfileOpen(false);
+                  // Handle logout
+                }}
+              >
+                <FaSignOutAlt className="text-lg" />
+                Logout
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+    </>
+  );
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] flex">
-      {/* Sidebar */}
-      <SidebarBuyer />
-
-      {/* Main Content */}
-      <div
-        className={`flex-1 transition-all duration-300 ${
-          collapsed ? "lg:ml-16" : "lg:ml-64"
-        }`}
-      >
-        {/* Header */}
-        <div className="bg-white shadow-sm p-4">
-          <div className="flex justify-end items-center">
-            <button className="relative p-2 rounded-full hover:bg-[#e0f2fe] focus:outline-none mr-4">
-              <FaBell className="text-2xl text-[#0284c7]" />
-              <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
-            </button>
-            <div className="relative">
-              <button
-                className="flex items-center gap-2 p-2 rounded-full hover:bg-[#e0f2fe] focus:outline-none"
-                onMouseDown={() => setProfileOpen(true)}
-                // onMouseLeave={() =>
-                //   setTimeout(() => setProfileOpen(false), 200)
-                // }
-                // onClick={() => setProfileOpen((open) => !open)}
-              >
-                <FaUserCircle className="text-3xl text-[#0284c7]" />
-                <span className="text-[#091a2b] font-medium">John Doe</span>
-              </button>
-              {profileOpen && (
-                <div
-                  className="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg py-2 z-50 border border-gray-100"
-                  onMouseEnter={() => setProfileOpen(true)}
-                  onMouseLeave={() => setProfileOpen(false)}
-                >
-                  <button className="w-full flex items-center gap-2 px-4 py-2 text-[#091a2b] hover:bg-[#f1f3f4]">
-                    <FaUser className="text-lg" /> Profile
-                  </button>
-                  <button className="w-full flex items-center gap-2 px-4 py-2 text-[#a8aeaf] hover:text-red-600 hover:bg-[#f1f3f4]">
-                    <FaSignOutAlt className="text-lg" /> Logout
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Page Content */}
-        <div className="p-4">
-          <Outlet />
-        </div>
-      </div>
-    </div>
+    <DashboardLayout
+      sidebar={SidebarBuyer}
+      title="Welcome back, John"
+      subtitle="Find your perfect home with personalized recommendations"
+      actions={dashboardActions}
+    >
+      <Outlet />
+    </DashboardLayout>
   );
 };
 
