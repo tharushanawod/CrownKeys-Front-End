@@ -148,55 +148,8 @@ const SidebarAgent = () => {
             </div>
           ))}
         </nav>
-
-        {/* Add New Listing Button */}
-        <div className="px-4 mt-4 relative group">
-          <Link
-            to="/agent/add-listing"
-            className={`w-full flex items-center ${
-              collapsed ? "justify-center px-2" : "gap-2 justify-center"
-            } bg-[#0284c7] text-white hover:bg-[#0369a1] font-semibold py-3 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-md`}
-          >
-            <FaPlus className="text-lg transition-all duration-300 ease-in-out group-hover:scale-110" />
-            {!collapsed && (
-              <span className="transition-all duration-300 ease-in-out group-hover:font-bold">
-                Add New Listing
-              </span>
-            )}
-          </Link>
-          {/* Tooltip for collapsed add listing button */}
-          {collapsed && (
-            <div className="absolute left-full ml-2 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white text-sm px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-all duration-300 ease-in-out pointer-events-none whitespace-nowrap z-50">
-              Add New Listing
-              <div className="absolute right-full top-1/2 transform -translate-y-1/2 border-4 border-transparent border-r-gray-800"></div>
-            </div>
-          )}
-        </div>
-
-        <div className="flex-1" />
-
-        {/* Logout Button */}
-        <div className="px-4 mt-8 relative group">
-          <button
-            className={`w-full flex items-center ${
-              collapsed ? "justify-center px-2" : "gap-2 justify-center"
-            } bg-red-50 text-[#a8aeaf] hover:text-red-600 hover:bg-red-100 font-semibold py-3 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-md`}
-          >
-            <FaSignOutAlt className="text-lg transition-all duration-300 ease-in-out group-hover:scale-110" />
-            {!collapsed && (
-              <span className="transition-all duration-300 ease-in-out group-hover:font-bold">
-                Logout
-              </span>
-            )}
-          </button>
-          {/* Tooltip for collapsed logout button */}
-          {collapsed && (
-            <div className="absolute left-full ml-2 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white text-sm px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-all duration-300 ease-in-out pointer-events-none whitespace-nowrap z-50">
-              Logout
-              <div className="absolute right-full top-1/2 transform -translate-y-1/2 border-4 border-transparent border-r-gray-800"></div>
-            </div>
-          )}
-        </div>
+       
+       
       </aside>
       {/* Overlay for mobile */}
       {open && (
