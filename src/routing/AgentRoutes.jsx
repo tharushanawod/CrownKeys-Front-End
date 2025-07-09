@@ -10,6 +10,7 @@ import Loader from "../components/Loader";
 // Lazy load agent components
 const AgentDashboard = lazy(() => import("../pages/Agent/AgentDashboard"));
 const AgentProperties = lazy(() => import("../pages/Agent/AgentProperties"));
+const AgentInquiries = lazy(() => import("../pages/Agent/Inquiries"));
 const Profile = lazy(() => import("../components/Profile"));
 
 // Agent Layout Component
@@ -124,14 +125,7 @@ const AgentRoutes = () => {
             {/* Agent specific routes */}
             <Route path="dashboard" element={<AgentDashboard />} />
             <Route path="listings" element={<AgentProperties />} />
-            <Route
-              path="inquiries"
-              element={
-                <div className="text-center text-gray-500 mt-10">
-                  Inquiries page coming soon
-                </div>
-              }
-            />
+            <Route path="inquiries" element={<AgentInquiries />} />
             <Route
               path="offers"
               element={
