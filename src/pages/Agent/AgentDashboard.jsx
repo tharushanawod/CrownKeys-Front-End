@@ -10,6 +10,7 @@ import {
   FaChartLine,
 } from "react-icons/fa";
 import { useState } from "react";
+import AgentPropertyCard from "../../components/AgentPropertyCard";
 
 const statCards = [
   { label: "Active Listings", value: 12, icon: <FaBuilding /> },
@@ -25,32 +26,47 @@ const statCards = [
 const agentListings = [
   {
     id: 1,
-    img: "https://images.unsplash.com/photo-1560184897-6a8c1b1e1c8b?auto=format&fit=crop&w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1560184897-6a8c1b1e1c8b?auto=format&fit=crop&w=600&q=80",
     price: "$450,000",
-    type: "Cozy Apartment",
+    title: "Cozy Apartment",
     address: "123 Main Street, Downtown",
+    beds: 3,
+    baths: 2,
+    area: "1,800 sqft",
     views: 234,
     inquiries: 12,
+    commission: "3,200",
     status: "Active",
   },
   {
     id: 2,
-    img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80",
     price: "$375,000",
-    type: "Family Home",
+    title: "Family Home",
     address: "456 Oak Avenue, Suburbs",
+    beds: 4,
+    baths: 3,
+    area: "2,200 sqft",
     views: 189,
     inquiries: 8,
+    commission: "2,750",
     status: "Pending",
   },
   {
     id: 3,
-    img: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80",
     price: "$525,000",
-    type: "Modern Loft",
+    title: "Modern Loft",
     address: "789 Pine Road, City Center",
+    beds: 2,
+    baths: 2,
+    area: "1,500 sqft",
     views: 312,
     inquiries: 15,
+    commission: "4,200",
     status: "Active",
   },
 ];
@@ -92,14 +108,24 @@ const recentActivity = [
 const AgentDashboard = () => {
   const [listings, setListings] = useState(agentListings);
 
-  const handleViewDetails = (listing) => {
-    console.log("View details for:", listing);
+  const handleViewDetails = (property) => {
+    console.log("View details for:", property);
     // You can add navigation to listing details page or open a modal
   };
 
-  const handleEditListing = (listing) => {
-    console.log("Edit listing:", listing);
+  const handleEdit = (property) => {
+    console.log("Edit property:", property);
     // You can add navigation to edit listing page
+  };
+
+  const handleDelete = (property) => {
+    console.log("Delete property:", property);
+    // Show confirmation dialog and delete property
+  };
+
+  const handleViewAnalytics = (property) => {
+    console.log("View property analytics:", property);
+    // Navigate to analytics page or open modal
   };
 
   return (
@@ -136,71 +162,15 @@ const AgentDashboard = () => {
             Your Latest Listings
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {listings.map((listing) => (
-              <div
-                key={listing.id}
-                className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300"
-              >
-                <div className="relative">
-                  <img
-                    src={listing.img}
-                    alt={listing.type}
-                    className="w-full h-48 object-cover rounded-t-xl"
-                  />
-                  <div className="absolute top-3 right-3">
-                    <span
-                      className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                        listing.status === "Active"
-                          ? "bg-green-100 text-green-700"
-                          : listing.status === "Pending"
-                          ? "bg-yellow-100 text-yellow-700"
-                          : "bg-blue-100 text-blue-700"
-                      }`}
-                    >
-                      {listing.status}
-                    </span>
-                  </div>
-                </div>
-                <div className="p-4">
-                  <div className="flex justify-between items-start mb-2">
-                    <h3 className="font-bold text-[#091a2b] text-lg">
-                      {listing.price}
-                    </h3>
-                  </div>
-                  <p className="text-[#0284c7] font-semibold mb-1">
-                    {listing.type}
-                  </p>
-                  <p className="text-[#64748b] text-sm mb-3">
-                    {listing.address}
-                  </p>
-
-                  <div className="flex justify-between text-sm text-[#64748b] mb-4">
-                    <div className="flex items-center gap-1">
-                      <FaEye className="text-[#0284c7]" />
-                      <span>{listing.views} views</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <FaEnvelope className="text-[#0284c7]" />
-                      <span>{listing.inquiries} inquiries</span>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => handleViewDetails(listing)}
-                      className="flex-1 bg-[#0284c7] text-white py-2 px-3 rounded-lg text-sm font-semibold hover:bg-[#0369a1] transition-colors"
-                    >
-                      View Details
-                    </button>
-                    <button
-                      onClick={() => handleEditListing(listing)}
-                      className="flex-1 bg-[#f1f3f4] text-[#0284c7] py-2 px-3 rounded-lg text-sm font-semibold hover:bg-[#e0f2fe] transition-colors"
-                    >
-                      Edit
-                    </button>
-                  </div>
-                </div>
-              </div>
+            {listings.map((property) => (
+              <AgentPropertyCard
+                key={property.id}
+                property={property}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+                onViewDetails={handleViewDetails}
+                onViewAnalytics={handleViewAnalytics}
+              />
             ))}
           </div>
         </div>
