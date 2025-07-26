@@ -14,6 +14,7 @@ const AgentInquiries = lazy(() => import("../pages/Agent/Inquiries"));
 const AgentAnalytics = lazy(() => import("../pages/Agent/Analytics"));
 const AgentMessages = lazy(() => import("../pages/Agent/Messages"));
 const AgentOffers = lazy(() => import("../pages/Agent/Offers"));
+const AgentSupport = lazy(() => import("../pages/Agent/Support"));
 const Profile = lazy(() => import("../components/Profile"));
 
 // Agent Layout Component
@@ -148,14 +149,7 @@ const AgentRoutes = () => {
                 </div>
               }
             />
-            <Route
-              path="support"
-              element={
-                <div className="text-center text-gray-500 mt-10">
-                  Support Center page coming soon
-                </div>
-              }
-            />
+            <Route path="support" element={<AgentSupport />} />
             <Route path="settings" element={<AgentProfileWrapper />} />
             <Route path="profile" element={<AgentProfileWrapper />} />
           </Route>
