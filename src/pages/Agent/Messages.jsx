@@ -24,7 +24,8 @@ const conversations = [
     id: 1,
     clientName: "Sarah Johnson",
     clientAvatar: "https://randomuser.me/api/portraits/women/1.jpg",
-    lastMessage: "Thank you for the property details. When can we schedule a viewing?",
+    lastMessage:
+      "Thank you for the property details. When can we schedule a viewing?",
     timestamp: "2 min ago",
     unreadCount: 2,
     isOnline: true,
@@ -37,25 +38,27 @@ const conversations = [
         content: "Hi! I'm interested in the downtown apartment listing.",
         timestamp: "10:30 AM",
         status: "read",
-        type: "text"
+        type: "text",
       },
       {
         id: 2,
         senderId: "agent",
-        content: "Hello Sarah! Thank you for your interest. I'd be happy to help you with that property. Here are the details...",
+        content:
+          "Hello Sarah! Thank you for your interest. I'd be happy to help you with that property. Here are the details...",
         timestamp: "10:32 AM",
         status: "read",
-        type: "text"
+        type: "text",
       },
       {
         id: 3,
         senderId: "client",
-        content: "Thank you for the property details. When can we schedule a viewing?",
+        content:
+          "Thank you for the property details. When can we schedule a viewing?",
         timestamp: "10:45 AM",
         status: "delivered",
-        type: "text"
-      }
-    ]
+        type: "text",
+      },
+    ],
   },
   {
     id: 2,
@@ -71,10 +74,11 @@ const conversations = [
       {
         id: 1,
         senderId: "agent",
-        content: "Hi Michael! How about tomorrow at 2 PM for the beach house viewing?",
+        content:
+          "Hi Michael! How about tomorrow at 2 PM for the beach house viewing?",
         timestamp: "Yesterday 4:20 PM",
         status: "read",
-        type: "text"
+        type: "text",
       },
       {
         id: 2,
@@ -82,9 +86,9 @@ const conversations = [
         content: "Perfect! See you tomorrow at 2 PM.",
         timestamp: "Yesterday 4:25 PM",
         status: "read",
-        type: "text"
-      }
-    ]
+        type: "text",
+      },
+    ],
   },
   {
     id: 3,
@@ -100,18 +104,20 @@ const conversations = [
       {
         id: 1,
         senderId: "client",
-        content: "Hi! I saw your listing for the family home. It looks perfect for us!",
+        content:
+          "Hi! I saw your listing for the family home. It looks perfect for us!",
         timestamp: "Today 2:15 PM",
         status: "read",
-        type: "text"
+        type: "text",
       },
       {
         id: 2,
         senderId: "agent",
-        content: "That's wonderful! I'd love to show you around. It's a great property for families.",
+        content:
+          "That's wonderful! I'd love to show you around. It's a great property for families.",
         timestamp: "Today 2:18 PM",
         status: "read",
-        type: "text"
+        type: "text",
       },
       {
         id: 3,
@@ -119,9 +125,9 @@ const conversations = [
         content: "Could you send me the floor plans?",
         timestamp: "Today 3:30 PM",
         status: "delivered",
-        type: "text"
-      }
-    ]
+        type: "text",
+      },
+    ],
   },
   {
     id: 4,
@@ -137,10 +143,11 @@ const conversations = [
       {
         id: 1,
         senderId: "agent",
-        content: "Here's the virtual tour link for the loft: https://virtualtour.com/loft123",
+        content:
+          "Here's the virtual tour link for the loft: https://virtualtour.com/loft123",
         timestamp: "Yesterday 1:00 PM",
         status: "read",
-        type: "text"
+        type: "text",
       },
       {
         id: 2,
@@ -148,14 +155,16 @@ const conversations = [
         content: "Thanks for the virtual tour link!",
         timestamp: "Yesterday 1:15 PM",
         status: "read",
-        type: "text"
-      }
-    ]
-  }
+        type: "text",
+      },
+    ],
+  },
 ];
 
 const AgentMessages = () => {
-  const [selectedConversation, setSelectedConversation] = useState(conversations[0]);
+  const [selectedConversation, setSelectedConversation] = useState(
+    conversations[0]
+  );
   const [messageInput, setMessageInput] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
@@ -170,9 +179,10 @@ const AgentMessages = () => {
     scrollToBottom();
   }, [selectedConversation]);
 
-  const filteredConversations = conversations.filter(conv =>
-    conv.clientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    conv.propertyInterest.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredConversations = conversations.filter(
+    (conv) =>
+      conv.clientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      conv.propertyInterest.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleSendMessage = () => {
@@ -181,11 +191,14 @@ const AgentMessages = () => {
         id: selectedConversation.messages.length + 1,
         senderId: "agent",
         content: messageInput,
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        timestamp: new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
         status: "sent",
-        type: "text"
+        type: "text",
       };
-      
+
       // In a real app, you'd update the conversation in your state management
       console.log("Sending message:", newMessage);
       setMessageInput("");
@@ -193,7 +206,7 @@ const AgentMessages = () => {
   };
 
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();
     }
@@ -209,14 +222,21 @@ const AgentMessages = () => {
 
   const getMessageStatusIcon = (status) => {
     switch (status) {
-      case "sent": return <FaCheck className="text-gray-400 text-xs" />;
-      case "delivered": return <FaCheckDouble className="text-gray-400 text-xs" />;
-      case "read": return <FaCheckDouble className="text-blue-500 text-xs" />;
-      default: return <FaClock className="text-gray-400 text-xs" />;
+      case "sent":
+        return <FaCheck className="text-gray-400 text-xs" />;
+      case "delivered":
+        return <FaCheckDouble className="text-gray-400 text-xs" />;
+      case "read":
+        return <FaCheckDouble className="text-blue-500 text-xs" />;
+      default:
+        return <FaClock className="text-gray-400 text-xs" />;
     }
   };
 
-  const totalUnreadMessages = conversations.reduce((total, conv) => total + conv.unreadCount, 0);
+  const totalUnreadMessages = conversations.reduce(
+    (total, conv) => total + conv.unreadCount,
+    0
+  );
 
   return (
     <div className="h-[calc(100vh-200px)] bg-white rounded-lg shadow-sm overflow-hidden">
@@ -236,7 +256,7 @@ const AgentMessages = () => {
                 </button>
               </div>
             </div>
-            
+
             {/* Search */}
             <div className="relative">
               <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#64748b]" />
@@ -257,7 +277,9 @@ const AgentMessages = () => {
                 key={conversation.id}
                 onClick={() => setSelectedConversation(conversation)}
                 className={`p-4 border-b border-gray-100 cursor-pointer hover:bg-gray-50 transition-colors ${
-                  selectedConversation.id === conversation.id ? 'bg-blue-50 border-r-2 border-r-[#0284c7]' : ''
+                  selectedConversation.id === conversation.id
+                    ? "bg-blue-50 border-r-2 border-r-[#0284c7]"
+                    : ""
                 }`}
               >
                 <div className="flex items-start gap-3">
@@ -327,7 +349,7 @@ const AgentMessages = () => {
                       </h3>
                       <div className="flex items-center gap-2">
                         <span className="text-sm text-[#64748b]">
-                          {selectedConversation.isOnline ? 'Online' : 'Offline'}
+                          {selectedConversation.isOnline ? "Online" : "Offline"}
                         </span>
                         <span className="text-sm text-[#0284c7]">
                           • {selectedConversation.propertyInterest}
@@ -355,23 +377,29 @@ const AgentMessages = () => {
                   {selectedConversation.messages.map((message) => (
                     <div
                       key={message.id}
-                      className={`flex ${message.senderId === 'agent' ? 'justify-end' : 'justify-start'}`}
+                      className={`flex ${
+                        message.senderId === "agent"
+                          ? "justify-end"
+                          : "justify-start"
+                      }`}
                     >
                       <div
                         className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
-                          message.senderId === 'agent'
-                            ? 'bg-[#0284c7] text-white'
-                            : 'bg-white text-[#091a2b] border border-gray-200'
+                          message.senderId === "agent"
+                            ? "bg-[#0284c7] text-white"
+                            : "bg-white text-[#091a2b] border border-gray-200"
                         }`}
                       >
                         <p className="text-sm">{message.content}</p>
                         <div
                           className={`flex items-center justify-between mt-1 text-xs ${
-                            message.senderId === 'agent' ? 'text-blue-100' : 'text-[#64748b]'
+                            message.senderId === "agent"
+                              ? "text-blue-100"
+                              : "text-[#64748b]"
                           }`}
                         >
                           <span>{formatTimestamp(message.timestamp)}</span>
-                          {message.senderId === 'agent' && (
+                          {message.senderId === "agent" && (
                             <span className="ml-2">
                               {getMessageStatusIcon(message.status)}
                             </span>
