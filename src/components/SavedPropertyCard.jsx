@@ -13,6 +13,7 @@ const SavedPropertyCard = ({
   onToggleSave,
   onViewDetails,
 }) => {
+  console.log("Property Image:", property.img);
   return (
     <div
       className={`bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden ${
@@ -43,7 +44,9 @@ const SavedPropertyCard = ({
       {/* Property Details */}
       <div className="p-4 flex-1">
         <div className="flex justify-between items-start mb-2">
-          <h3 className="text-xl font-bold text-[#091a2b]">{property.price}</h3>
+          <h3 className="text-xl font-bold text-[#091a2b]">
+            Rs {property.price}
+          </h3>
         </div>
 
         <p className="text-[#64748b] text-sm mb-1">{property.type}</p>

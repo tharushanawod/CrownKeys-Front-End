@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import api from "../../api/api";
 import {
   FaSearch,
   FaFilter,
@@ -16,120 +17,14 @@ import {
   FaWarehouse,
   FaHotel,
   FaCity,
+  FaIndustry,
+  FaStore,
+  FaLandmark,
+  FaSpinner,
+  FaExclamationTriangle,
 } from "react-icons/fa";
 import SavedPropertyCard from "../../components/SavedPropertyCard";
 import { motion } from "framer-motion";
-
-const propertyData = [
-  {
-    id: 1,
-    img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
-    price: "$850,000",
-    type: "Single Family Home",
-    address: "123 Luxury Lane, Beverly Hills, CA 90210",
-    beds: 4,
-    baths: 3,
-    area: "2,450 sqft",
-    saved: false,
-    category: "house",
-  },
-  {
-    id: 2,
-    img: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=800&q=80",
-    price: "$1,250,000",
-    type: "Beach House",
-    address: "456 Ocean View Dr, Malibu, CA 90265",
-    beds: 5,
-    baths: 4,
-    area: "3,200 sqft",
-    saved: true,
-    category: "house",
-  },
-  {
-    id: 3,
-    img: "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=800&q=80",
-    price: "$725,000",
-    type: "Modern Condo",
-    address: "789 Mountain View Rd, Santa Monica, CA 90401",
-    beds: 3,
-    baths: 2,
-    area: "1,850 sqft",
-    saved: false,
-    category: "condo",
-  },
-  {
-    id: 4,
-    img: "https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=800&q=80",
-    price: "$975,000",
-    type: "Townhouse",
-    address: "321 Park Avenue, Los Angeles, CA 90028",
-    beds: 4,
-    baths: 3,
-    area: "2,800 sqft",
-    saved: true,
-    category: "townhouse",
-  },
-  {
-    id: 5,
-    img: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80",
-    price: "$1,450,000",
-    type: "Modern Villa",
-    address: "567 Sunset Blvd, West Hollywood, CA 90069",
-    beds: 5,
-    baths: 4,
-    area: "3,500 sqft",
-    saved: false,
-    category: "villa",
-  },
-  {
-    id: 6,
-    img: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80",
-    price: "$680,000",
-    type: "Contemporary Home",
-    address: "890 Highland Ave, Hollywood, CA 90028",
-    beds: 3,
-    baths: 2,
-    area: "1,750 sqft",
-    saved: false,
-    category: "house",
-  },
-  {
-    id: 7,
-    img: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=800&q=80",
-    price: "$2,200,000",
-    type: "Luxury Penthouse",
-    address: "101 Downtown Plaza, Los Angeles, CA 90013",
-    beds: 4,
-    baths: 4,
-    area: "4,200 sqft",
-    saved: true,
-    category: "condo",
-  },
-  {
-    id: 8,
-    img: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=800&q=80",
-    price: "$550,000",
-    type: "Starter Home",
-    address: "234 Maple Street, Pasadena, CA 91101",
-    beds: 2,
-    baths: 2,
-    area: "1,200 sqft",
-    saved: false,
-    category: "house",
-  },
-  {
-    id: 9,
-    img: "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=800&q=80",
-    price: "$3,750,000",
-    type: "Mansion",
-    address: "456 Elite Drive, Bel Air, CA 90077",
-    beds: 7,
-    baths: 8,
-    area: "8,500 sqft",
-    saved: false,
-    category: "mansion",
-  },
-];
 
 // Property categories data
 const propertyCategories = [
@@ -137,54 +32,67 @@ const propertyCategories = [
     id: 1,
     title: "Residential Homes",
     description:
-      "Find your perfect family home with our extensive collection of houses and villas.",
+      "Find your perfect family home with our extensive collection of houses and residential properties.",
     icon: <FaHome className="text-4xl" />,
     image:
       "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
     count: "250+ Properties",
-    category: "house",
+    category: "residential-homes",
   },
   {
     id: 2,
     title: "Apartments",
     description:
-      "Modern apartments in prime locations for urban living and investment.",
+      "Modern apartments in prime locations for urban living and investment opportunities.",
     icon: <FaBuilding className="text-4xl" />,
     image:
       "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
     count: "180+ Properties",
-    category: "condo",
+    category: "apartments",
   },
   {
     id: 3,
-    title: "Townhouses",
-    description: "Spacious townhouses perfect for families and modern living.",
-    icon: <FaBuilding className="text-4xl" />,
+    title: "Lands",
+    description:
+      "Premium land plots for development, investment, and custom construction projects.",
+    icon: <FaLandmark className="text-4xl" />,
     image:
-      "https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=800&q=80",
-    count: "120+ Properties",
-    category: "townhouse",
+      "https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+    count: "90+ Properties",
+    category: "lands",
   },
   {
     id: 4,
+    title: "Commercial Spaces",
+    description:
+      "Office buildings, retail spaces, and commercial properties for business ventures.",
+    icon: <FaStore className="text-4xl" />,
+    image:
+      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+    count: "120+ Properties",
+    category: "commercial-spaces",
+  },
+  {
+    id: 5,
     title: "Luxury Villas",
     description:
-      "Exclusive luxury villas with premium amenities and stunning views.",
+      "Exclusive luxury villas with premium amenities, stunning views, and exceptional design.",
     icon: <FaHotel className="text-4xl" />,
     image:
       "https://images.unsplash.com/photo-1613490493576-7fde63acd811?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
     count: "75+ Properties",
-    category: "villa",
+    category: "luxury-villas",
   },
   {
-    id: 5,
-    title: "Mansions",
-    description: "Exceptional mansions with unparalleled luxury and space.",
-    icon: <FaCity className="text-4xl" />,
+    id: 6,
+    title: "Industrial Properties",
+    description:
+      "Warehouses, factories, and industrial facilities for manufacturing and logistics.",
+    icon: <FaIndustry className="text-4xl" />,
     image:
-      "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=800&q=80",
-    count: "60+ Properties",
-    category: "mansion",
+      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+    count: "45+ Properties",
+    category: "industrial-properties",
   },
 ];
 
@@ -213,7 +121,18 @@ const itemVariants = {
 };
 
 const PropertySearch = () => {
-  const [properties, setProperties] = useState(propertyData);
+  // API and loading states
+  const [properties, setProperties] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  // Pagination states (server-side)
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalProperties, setTotalProperties] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+  const propertiesPerPage = 12; // Match backend limit
+
+  // UI states
   const [viewMode, setViewMode] = useState("grid");
   const [showFilters, setShowFilters] = useState(false);
   const [showCategories, setShowCategories] = useState(true);
@@ -226,91 +145,208 @@ const PropertySearch = () => {
   const [bedrooms, setBedrooms] = useState("");
   const [bathrooms, setBathrooms] = useState("");
   const [propertyType, setPropertyType] = useState("");
-  const [sortBy, setSortBy] = useState("newest");
+  const [sortBy, setSortBy] = useState("created_at");
+  const [sortOrder, setSortOrder] = useState("desc");
 
-  // Pagination
-  const [currentPage, setCurrentPage] = useState(1);
-  const propertiesPerPage = 9;
+  // Debounce timer for search
+  const searchTimer = useRef(null);
+  const abortControllerRef = useRef(null);
 
-  // Filter and search logic
-  const filteredProperties = properties.filter((property) => {
-    const matchesSearch =
-      searchQuery === "" ||
-      property.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      property.address.toLowerCase().includes(searchQuery.toLowerCase());
+  // Fetch properties from API
+  const fetchProperties = useCallback(
+    async (resetPage = false) => {
+      // Cancel previous request
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+      const controller = new AbortController();
+      abortControllerRef.current = controller;
 
-    const matchesLocation =
-      locationQuery === "" ||
-      property.address.toLowerCase().includes(locationQuery.toLowerCase());
+      setLoading(true);
+      setError(null);
 
-    const propertyPrice = parseInt(property.price.replace(/[$,]/g, ""));
-    const matchesPrice =
-      (priceRange.min === "" || propertyPrice >= parseInt(priceRange.min)) &&
-      (priceRange.max === "" || propertyPrice <= parseInt(priceRange.max));
+      try {
+        const params = {
+          page: resetPage ? 1 : currentPage,
+          limit: propertiesPerPage,
+        };
 
-    const matchesBeds = bedrooms === "" || property.beds >= parseInt(bedrooms);
-    const matchesBaths =
-      bathrooms === "" || property.baths >= parseInt(bathrooms);
-    const matchesType =
-      propertyType === "" || property.category === propertyType;
+        // Add search parameters
+        if (searchQuery.trim()) params.search = searchQuery.trim();
+        if (locationQuery.trim()) {
+          // You can split this to city/state or use one field
+          params.city = locationQuery.trim();
+        }
+        if (priceRange.min) params.price_min = priceRange.min;
+        if (priceRange.max) params.price_max = priceRange.max;
+        if (bedrooms) params.bedrooms = bedrooms;
+        if (bathrooms) params.bathrooms = bathrooms;
+        if (propertyType || selectedCategory) {
+          // Map frontend categories to backend property_type values
+          const categoryMap = {
+            "residential-homes": "House",
+            apartments: "Apartment",
+            lands: "Land",
+            "commercial-spaces": "Commercial",
+            "luxury-villas": "Villa",
+            "industrial-properties": "Industrial",
+          };
+          params.property_type =
+            categoryMap[propertyType || selectedCategory] ||
+            propertyType ||
+            selectedCategory;
+        }
+        if (sortBy) params.sortBy = sortBy;
+        if (sortOrder) params.sortOrder = sortOrder;
 
-    // Filter by selected category from category page
-    const matchesSelectedCategory =
-      selectedCategory === "" || property.category === selectedCategory;
+        const response = await api.get("/properties/search", {
+          params,
+          signal: controller.signal,
+        });
 
-    return (
-      matchesSearch &&
-      matchesLocation &&
-      matchesPrice &&
-      matchesBeds &&
-      matchesBaths &&
-      matchesType &&
-      matchesSelectedCategory
-    );
-  });
+        console.log("API Response:", response.data.data);
 
-  // Sort properties
-  const sortedProperties = [...filteredProperties].sort((a, b) => {
-    const priceA = parseInt(a.price.replace(/[$,]/g, ""));
-    const priceB = parseInt(b.price.replace(/[$,]/g, ""));
+        if (response.data.success) {
+          const { properties: fetchedProperties, pagination } =
+            response.data.data;
 
-    switch (sortBy) {
-      case "price-low":
-        return priceA - priceB;
-      case "price-high":
-        return priceB - priceA;
-      case "beds":
-        return b.beds - a.beds;
-      case "newest":
-      default:
-        return 0;
+          // Transform properties to match frontend format
+          const transformedProperties = fetchedProperties.map((property) => ({
+            id: property.id,
+            img:
+              property.photos && property.photos.length > 0
+                ? `${property.photos[0]}`
+                : "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
+            price: property.price
+              ? `${property.price.toLocaleString()}`
+              : "Price not available",
+            type: property.property_type || "Property",
+            address:
+              `${property.address || ""}, ${property.city || ""}, ${
+                property.state || ""
+              }`.replace(/^,\s*|,\s*$/g, "") || "Address not available",
+            beds: property.bedrooms || 0,
+            baths: property.bathrooms || 0,
+            area: property.size
+              ? `${property.size} sqft`
+              : "Area not specified",
+            saved: false, // You can check if it's in user's favorites
+            category:
+              property.property_type?.toLowerCase().replace(/\s+/g, "-") || "",
+            originalData: property, // Keep original data for reference
+          }));
+
+          setProperties(transformedProperties);
+          setTotalProperties(pagination.total);
+          setTotalPages(pagination.totalPages);
+          console.log("API Response:", response.data.data);
+
+          if (resetPage) {
+            setCurrentPage(1);
+          }
+        }
+      } catch (err) {
+        if (err.name !== "CanceledError") {
+          console.error("Error fetching properties:", err);
+          setError("Failed to load properties. Please try again.");
+        }
+      } finally {
+        setLoading(false);
+      }
+    },
+    [
+      currentPage,
+      propertiesPerPage,
+      searchQuery,
+      locationQuery,
+      priceRange,
+      bedrooms,
+      bathrooms,
+      propertyType,
+      selectedCategory,
+      sortBy,
+      sortOrder,
+    ]
+  );
+
+  // Debounced search effect
+  useEffect(() => {
+    if (searchTimer.current) {
+      clearTimeout(searchTimer.current);
     }
-  });
 
-  // Pagination calculations
-  const totalProperties = sortedProperties.length;
-  const totalPages = Math.ceil(totalProperties / propertiesPerPage);
-  const startIndex = (currentPage - 1) * propertiesPerPage;
-  const endIndex = startIndex + propertiesPerPage;
-  const currentProperties = sortedProperties.slice(startIndex, endIndex);
+    searchTimer.current = setTimeout(() => {
+      if (!showCategories) {
+        // Only fetch if we're in search view
+        fetchProperties(true); // Reset to page 1 for new search
+      }
+    }, 500); // 500ms debounce
 
-  const toggleSave = (id) => {
-    setProperties(
-      properties.map((prop) =>
-        prop.id === id ? { ...prop, saved: !prop.saved } : prop
-      )
-    );
+    return () => {
+      if (searchTimer.current) {
+        clearTimeout(searchTimer.current);
+      }
+    };
+  }, [
+    searchQuery,
+    locationQuery,
+    priceRange,
+    bedrooms,
+    bathrooms,
+    propertyType,
+    selectedCategory,
+    sortBy,
+    sortOrder,
+    showCategories,
+    fetchProperties,
+  ]);
+
+  // Fetch when page changes (no debounce)
+  useEffect(() => {
+    if (!showCategories && currentPage > 1) {
+      fetchProperties(false);
+    }
+  }, [currentPage, showCategories, fetchProperties]);
+
+  // Handle category selection from categories page
+  const handleCategorySelect = (category) => {
+    setSelectedCategory(category);
+    setPropertyType(category);
+    setShowCategories(false);
+    setCurrentPage(1);
+    // fetchProperties will be called by useEffect
+  };
+
+  // Handle save/unsave property
+  const toggleSave = async (id) => {
+    try {
+      // Find the property to update optimistically
+      const property = properties.find((p) => p.id === id);
+      if (!property) return;
+
+      // Update UI optimistically
+      setProperties((prev) =>
+        prev.map((p) => (p.id === id ? { ...p, saved: !p.saved } : p))
+      );
+
+      // Make API call (you'll need to implement these endpoints)
+      if (property.saved) {
+        await api.delete(`/buyers/favorites/${id}`);
+      } else {
+        await api.post("/buyers/favorites", { propertyId: id });
+      }
+    } catch (err) {
+      // Revert optimistic update on error
+      setProperties((prev) =>
+        prev.map((p) => (p.id === id ? { ...p, saved: !p.saved } : p))
+      );
+      console.error("Error toggling save:", err);
+    }
   };
 
   const handleScheduleTour = (property) => {
-    console.log("View details for:", property);
-  };
-
-  const handleCategorySelect = (category) => {
-    setSelectedCategory(category);
-    setPropertyType(category); // Also set the propertyType filter
-    setShowCategories(false); // Hide categories and show search results
-    setCurrentPage(1); // Reset to first page
+    console.log("Schedule tour for:", property);
+    // You can navigate to tour scheduling page or open modal
   };
 
   const clearFilters = () => {
@@ -321,7 +357,8 @@ const PropertySearch = () => {
     setBathrooms("");
     setPropertyType("");
     setSelectedCategory("");
-    setSortBy("newest");
+    setSortBy("created_at");
+    setSortOrder("desc");
     setCurrentPage(1);
   };
 
@@ -347,6 +384,18 @@ const PropertySearch = () => {
       setCurrentPage(currentPage + 1);
     }
   };
+
+  // Handle sort change
+  const handleSortChange = (value) => {
+    const [field, order] = value.split("-");
+    setSortBy(field);
+    setSortOrder(order || "desc");
+    setCurrentPage(1);
+  };
+
+  // Calculate pagination info
+  const startIndex = (currentPage - 1) * propertiesPerPage;
+  const endIndex = startIndex + propertiesPerPage;
 
   return (
     <div className="bg-[#f8fafc] p-4">
@@ -568,11 +617,14 @@ const PropertySearch = () => {
                     className="px-3 py-3 border border-[#e2e8f0] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0284c7] focus:border-transparent"
                   >
                     <option value="">All Property Types</option>
-                    <option value="house">House</option>
-                    <option value="condo">Condo</option>
-                    <option value="townhouse">Townhouse</option>
-                    <option value="villa">Villa</option>
-                    <option value="mansion">Mansion</option>
+                    <option value="residential-homes">Residential Homes</option>
+                    <option value="apartments">Apartments</option>
+                    <option value="lands">Lands</option>
+                    <option value="commercial-spaces">Commercial Spaces</option>
+                    <option value="luxury-villas">Luxury Villas</option>
+                    <option value="industrial-properties">
+                      Industrial Properties
+                    </option>
                   </select>
 
                   {/* Clear Filters */}
@@ -610,14 +662,14 @@ const PropertySearch = () => {
                 <div className="flex items-center gap-2">
                   <span className="text-[#64748b] text-sm">Sort by:</span>
                   <select
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value)}
+                    value={`${sortBy}-${sortOrder}`}
+                    onChange={(e) => handleSortChange(e.target.value)}
                     className="border border-[#e2e8f0] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0284c7] focus:border-transparent"
                   >
-                    <option value="newest">Newest</option>
-                    <option value="price-low">Price: Low to High</option>
-                    <option value="price-high">Price: High to Low</option>
-                    <option value="beds">Most Bedrooms</option>
+                    <option value="created_at-desc">Newest</option>
+                    <option value="price-asc">Price: Low to High</option>
+                    <option value="price-desc">Price: High to Low</option>
+                    <option value="bedrooms-desc">Most Bedrooms</option>
                   </select>
                 </div>
 
@@ -648,7 +700,7 @@ const PropertySearch = () => {
             </div>
 
             {/* Properties Grid/List */}
-            {currentProperties.length > 0 ? (
+            {loading ? (
               <div
                 className={
                   viewMode === "grid"
@@ -656,7 +708,41 @@ const PropertySearch = () => {
                     : "space-y-4 mb-6"
                 }
               >
-                {currentProperties.map((property) => (
+                {Array.from({ length: propertiesPerPage }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="bg-white rounded-lg shadow-sm p-6 animate-pulse"
+                  >
+                    <div className="h-48 bg-gray-300 rounded-lg mb-4"></div>
+                    <div className="h-4 bg-gray-300 rounded mb-2"></div>
+                    <div className="h-4 bg-gray-300 rounded mb-2 w-3/4"></div>
+                    <div className="h-4 bg-gray-300 rounded w-1/2"></div>
+                  </div>
+                ))}
+              </div>
+            ) : error ? (
+              <div className="bg-white rounded-lg shadow-sm p-12 text-center mb-6">
+                <FaExclamationTriangle className="text-6xl text-red-400 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-[#091a2b] mb-2">
+                  Error Loading Properties
+                </h3>
+                <p className="text-[#64748b] mb-6">{error}</p>
+                <button
+                  onClick={() => fetchProperties(true)}
+                  className="bg-[#0284c7] text-white px-6 py-3 rounded-lg hover:bg-[#0369a1] transition-colors"
+                >
+                  Try Again
+                </button>
+              </div>
+            ) : properties.length > 0 ? (
+              <div
+                className={
+                  viewMode === "grid"
+                    ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6"
+                    : "space-y-4 mb-6"
+                }
+              >
+                {properties.map((property) => (
                   <SavedPropertyCard
                     key={property.id}
                     property={property}
@@ -676,7 +762,10 @@ const PropertySearch = () => {
                   Try adjusting your search criteria or filters
                 </p>
                 <button
-                  onClick={clearFilters}
+                  onClick={() => {
+                    clearFilters();
+                    fetchProperties(true);
+                  }}
                   className="bg-[#0284c7] text-white px-6 py-3 rounded-lg hover:bg-[#0369a1] transition-colors"
                 >
                   Clear All Filters
