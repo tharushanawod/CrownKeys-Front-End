@@ -59,6 +59,9 @@ const Login = () => {
           formData
         );
         console.log("Login successful:", response.data);
+        // After login success save the jwt token
+        localStorage.setItem("token", response.data.data.token);
+        localStorage.setItem("role", response.data.data.user.role);
 
         // Redirect to dashboard after success
         setTimeout(() => {
