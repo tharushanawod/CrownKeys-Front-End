@@ -17,6 +17,7 @@ const PropertyCategories = lazy(() =>
 const Lands = lazy(() => import("../pages/Properties/Lands"));
 const LandDetails = lazy(() => import("../pages/Properties/LandDetails"));
 const Houses = lazy(() => import("../pages/Properties/Houses"));
+const PropertyDetails = lazy(() => import("../components/PropertyDetails"));
 
 // Import user-specific routing
 import BuyerRoutes from "./BuyerRoutes";
@@ -37,6 +38,7 @@ const GeneralRoutes = () => {
         <Route path="/property-categories" element={<PropertyCategories />} />
         <Route path="/properties/lands" element={<Lands />} />
         <Route path="/properties/houses" element={<Houses />} />
+        <Route path="/properties/:id" element={<PropertyDetails />} />
         <Route
           path="/properties/lands/land-details"
           element={<LandDetails />}

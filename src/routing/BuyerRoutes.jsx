@@ -10,6 +10,7 @@ import BuyerDashboard from "../pages/Buyer/BuyerDashboard";
 import PropertySearch from "../pages/Buyer/PropertySearch";
 import SavedProperties from "../pages/Buyer/SavedProperties";
 import Profile from "../components/Profile";
+import PropertyDetails from "../components/PropertyDetails";
 
 const BuyerLayout = () => {
   const [profileOpen, setProfileOpen] = useState(false);
@@ -159,6 +160,9 @@ const BuyerRoutes = () => {
           <Route path="favorites" element={<SavedProperties />} />
           <Route path="profile" element={<BuyerProfileWrapper />} />
         </Route>
+
+        {/* Property Details - Outside the dashboard layout for full page display */}
+        <Route path="properties/:id" element={<PropertyDetails />} />
       </Routes>
     </SidebarProvider>
   );

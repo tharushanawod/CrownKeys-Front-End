@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import {
   FaRegHeart,
   FaHeart,
@@ -13,6 +14,17 @@ const SavedPropertyCard = ({
   onToggleSave,
   onViewDetails,
 }) => {
+  const navigate = useNavigate();
+
+  const handleViewDetails = () => {
+    if (onViewDetails) {
+      onViewDetails(property);
+    } else {
+      // Navigate to property details page
+      navigate(`/properties/${property.id}`);
+    }
+  };
+
   console.log("Property Image:", property.img);
   return (
     <div
@@ -67,7 +79,7 @@ const SavedPropertyCard = ({
 
         {/* View Details Button */}
         <button
-          onClick={() => onViewDetails && onViewDetails(property)}
+          onClick={handleViewDetails}
           className="w-full bg-[#0284c7] text-white py-2 px-4 rounded-lg hover:bg-[#0369a1] transition-colors font-medium"
         >
           View Details
