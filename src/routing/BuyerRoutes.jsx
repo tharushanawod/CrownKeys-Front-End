@@ -1,6 +1,7 @@
-import React, { useState } from "react";
-import { Routes, Route, Outlet } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Routes, Route, Outlet, useNavigate } from "react-router-dom";
 import { FaBell, FaUserCircle, FaUser, FaSignOutAlt } from "react-icons/fa";
+import api from "../api/api";
 import SidebarBuyer from "../components/SidebarBuyer";
 import DashboardLayout from "../components/DashboardLayout";
 import { SidebarProvider, useSidebar } from "../contexts/SidebarContext";
@@ -14,6 +15,42 @@ import PropertyDetails from "../components/PropertyDetails";
 
 const BuyerLayout = () => {
   const [profileOpen, setProfileOpen] = useState(false);
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  // Fetch user profile data
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const response = await api.get("/auth/profile");
+        if (response.data.success) {
+          setUserData(response.data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+        // If profile fetch fails, user might not be authenticated
+        if (error.response?.status === 401) {
+          // Redirect to login or handle authentication error
+          localStorage.removeItem("token");
+          localStorage.removeItem("role");
+          navigate("/login");
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserProfile();
+  }, [navigate]);
+
+  // Handle logout
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    localStorage.removeItem("user");
+    navigate("/");
+  };
 
   const dashboardActions = (
     <>
@@ -31,7 +68,7 @@ const BuyerLayout = () => {
         >
           <FaUserCircle className="text-2xl text-[#0284c7]" />
           <span className="text-[#091a2b] font-medium hidden sm:block">
-            John Doe
+            {loading ? "Loading..." : userData?.name || "User"}
           </span>
         </button>
 
@@ -49,7 +86,7 @@ const BuyerLayout = () => {
                 className="w-full flex items-center gap-3 px-4 py-2 text-[#091a2b] hover:bg-[#f1f3f4] transition-colors"
                 onClick={() => {
                   setProfileOpen(false);
-                  // Navigate to profile page
+                  navigate("profile");
                 }}
               >
                 <FaUser className="text-lg text-[#0284c7]" />
@@ -59,7 +96,7 @@ const BuyerLayout = () => {
                 className="w-full flex items-center gap-3 px-4 py-2 text-[#a8aeaf] hover:text-red-600 hover:bg-[#f1f3f4] transition-colors"
                 onClick={() => {
                   setProfileOpen(false);
-                  // Handle logout
+                  handleLogout();
                 }}
               >
                 <FaSignOutAlt className="text-lg" />
@@ -75,7 +112,13 @@ const BuyerLayout = () => {
   return (
     <DashboardLayout
       sidebar={SidebarBuyer}
-      title="Welcome back, John"
+      title={
+        loading
+          ? "Loading..."
+          : userData
+          ? `Welcome back, ${userData.firstName} ${userData.lastName}`
+          : "Welcome back"
+      }
       subtitle="Find your perfect home with personalized recommendations"
       actions={dashboardActions}
     >

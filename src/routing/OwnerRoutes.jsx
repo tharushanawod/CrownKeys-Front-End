@@ -1,6 +1,7 @@
-import React, { useState } from "react";
-import { Routes, Route, Outlet } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Routes, Route, Outlet, useNavigate } from "react-router-dom";
 import { FaBell, FaUserCircle, FaUser, FaSignOutAlt } from "react-icons/fa";
+import api from "../api/api";
 import SidebarOwner from "../components/SidebarOwner";
 
 // Import Owner pages
@@ -16,6 +17,41 @@ import OwnerDashboard from "../pages/Owner/OwnerDashboard";
 
 const OwnerLayout = () => {
   const [profileOpen, setProfileOpen] = useState(false);
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  // Fetch user profile data
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const response = await api.get("/auth/profile");
+        if (response.data.success) {
+          setUserData(response.data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+        // If profile fetch fails, user might not be authenticated
+        if (error.response?.status === 401) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("role");
+          navigate("/");
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserProfile();
+  }, [navigate]);
+
+  // Handle logout
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    localStorage.removeItem("user");
+    navigate("/");
+  };
 
   return (
     <div className="min-h-screen bg-[#f1f3f4] flex">
@@ -41,7 +77,11 @@ const OwnerLayout = () => {
                 onClick={() => setProfileOpen((open) => !open)}
               >
                 <FaUserCircle className="text-3xl text-[#0284c7]" />
-                <span className="text-[#091a2b] font-medium">John Silva</span>
+                <span className="text-[#091a2b] font-medium">
+                  {userData
+                    ? userData.firstName || userData.name || "Owner"
+                    : "Owner"}
+                </span>
               </button>
               {profileOpen && (
                 <div
@@ -49,10 +89,22 @@ const OwnerLayout = () => {
                   onMouseEnter={() => setProfileOpen(true)}
                   onMouseLeave={() => setProfileOpen(false)}
                 >
-                  <button className="w-full flex items-center gap-2 px-4 py-2 text-[#091a2b] hover:bg-[#f1f3f4]">
+                  <button
+                    className="w-full flex items-center gap-2 px-4 py-2 text-[#091a2b] hover:bg-[#f1f3f4]"
+                    onClick={() => {
+                      setProfileOpen(false);
+                      navigate("profile");
+                    }}
+                  >
                     <FaUser className="text-lg" /> Profile
                   </button>
-                  <button className="w-full flex items-center gap-2 px-4 py-2 text-[#a8aeaf] hover:text-red-600 hover:bg-[#f1f3f4]">
+                  <button
+                    className="w-full flex items-center gap-2 px-4 py-2 text-[#a8aeaf] hover:text-red-600 hover:bg-[#f1f3f4]"
+                    onClick={() => {
+                      setProfileOpen(false);
+                      handleLogout();
+                    }}
+                  >
                     <FaSignOutAlt className="text-lg" /> Logout
                   </button>
                 </div>
