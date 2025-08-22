@@ -30,7 +30,7 @@ const supportCategories = [
     icon: <FaGraduationCap />,
     description: "Learn the basics of using the platform",
     articleCount: 12,
-    color: "bg-blue-100 text-blue-600"
+    color: "bg-blue-100 text-blue-600",
   },
   {
     id: 2,
@@ -38,7 +38,7 @@ const supportCategories = [
     icon: <FaTools />,
     description: "Managing listings, photos, and property details",
     articleCount: 18,
-    color: "bg-green-100 text-green-600"
+    color: "bg-green-100 text-green-600",
   },
   {
     id: 3,
@@ -46,7 +46,7 @@ const supportCategories = [
     icon: <FaComments />,
     description: "Best practices for client interaction",
     articleCount: 15,
-    color: "bg-purple-100 text-purple-600"
+    color: "bg-purple-100 text-purple-600",
   },
   {
     id: 4,
@@ -54,7 +54,7 @@ const supportCategories = [
     icon: <FaFileAlt />,
     description: "Understanding your performance metrics",
     articleCount: 8,
-    color: "bg-orange-100 text-orange-600"
+    color: "bg-orange-100 text-orange-600",
   },
 ];
 
@@ -62,45 +62,51 @@ const frequentlyAskedQuestions = [
   {
     id: 1,
     question: "How do I add a new property listing?",
-    answer: "To add a new property listing, navigate to the 'My Listings' section and click the 'Add New Property' button. Fill in all required details including property description, photos, pricing, and location information. Make sure to include high-quality photos and detailed descriptions to attract potential buyers.",
+    answer:
+      "To add a new property listing, navigate to the 'My Listings' section and click the 'Add New Property' button. Fill in all required details including property description, photos, pricing, and location information. Make sure to include high-quality photos and detailed descriptions to attract potential buyers.",
     category: "Property Management",
-    tags: ["listings", "properties", "adding"]
+    tags: ["listings", "properties", "adding"],
   },
   {
     id: 2,
     question: "How can I track my commission earnings?",
-    answer: "You can track your commission earnings in the 'Analytics' section of your dashboard. The system automatically calculates your commissions based on closed deals and provides detailed breakdowns by month, quarter, and year. You can also export commission reports for your records.",
+    answer:
+      "You can track your commission earnings in the 'Analytics' section of your dashboard. The system automatically calculates your commissions based on closed deals and provides detailed breakdowns by month, quarter, and year. You can also export commission reports for your records.",
     category: "Analytics & Reports",
-    tags: ["commission", "earnings", "analytics"]
+    tags: ["commission", "earnings", "analytics"],
   },
   {
     id: 3,
     question: "What should I do if a client is not responding to messages?",
-    answer: "If a client is not responding to messages, try different communication channels like phone calls or emails. You can also schedule follow-up reminders in the system. Consider adjusting your communication timing and frequency based on the client's preferences indicated in their profile.",
+    answer:
+      "If a client is not responding to messages, try different communication channels like phone calls or emails. You can also schedule follow-up reminders in the system. Consider adjusting your communication timing and frequency based on the client's preferences indicated in their profile.",
     category: "Client Communication",
-    tags: ["clients", "communication", "messages"]
+    tags: ["clients", "communication", "messages"],
   },
   {
     id: 4,
     question: "How do I edit property photos and descriptions?",
-    answer: "To edit property photos and descriptions, go to your property listing and click the 'Edit' button. You can upload new photos, reorder existing ones, update the description, and modify any property details. Changes are saved automatically and will be visible to potential buyers immediately.",
+    answer:
+      "To edit property photos and descriptions, go to your property listing and click the 'Edit' button. You can upload new photos, reorder existing ones, update the description, and modify any property details. Changes are saved automatically and will be visible to potential buyers immediately.",
     category: "Property Management",
-    tags: ["photos", "editing", "descriptions"]
+    tags: ["photos", "editing", "descriptions"],
   },
   {
     id: 5,
     question: "Can I customize my commission rates for different properties?",
-    answer: "Yes, you can set custom commission rates for individual properties. When creating or editing a listing, you'll find the commission settings in the 'Financial Details' section. You can set different rates for buyer and seller commissions based on your agreements.",
+    answer:
+      "Yes, you can set custom commission rates for individual properties. When creating or editing a listing, you'll find the commission settings in the 'Financial Details' section. You can set different rates for buyer and seller commissions based on your agreements.",
     category: "Analytics & Reports",
-    tags: ["commission", "rates", "customization"]
+    tags: ["commission", "rates", "customization"],
   },
   {
     id: 6,
     question: "How do I schedule property viewings with clients?",
-    answer: "You can schedule property viewings directly through the messaging system or by using the integrated calendar feature. When a client expresses interest in a viewing, you can send them available time slots and confirm the appointment. The system will send automatic reminders to both parties.",
+    answer:
+      "You can schedule property viewings directly through the messaging system or by using the integrated calendar feature. When a client expresses interest in a viewing, you can send them available time slots and confirm the appointment. The system will send automatic reminders to both parties.",
     category: "Client Communication",
-    tags: ["viewings", "scheduling", "appointments"]
-  }
+    tags: ["viewings", "scheduling", "appointments"],
+  },
 ];
 
 const supportArticles = [
@@ -112,17 +118,18 @@ const supportArticles = [
     category: "Property Management",
     rating: 4.8,
     views: 1245,
-    lastUpdated: "2025-01-05"
+    lastUpdated: "2025-01-05",
   },
   {
     id: 2,
     title: "Effective Client Follow-up Strategies",
-    summary: "Best practices for maintaining client relationships and closing deals",
+    summary:
+      "Best practices for maintaining client relationships and closing deals",
     readTime: "6 min read",
     category: "Client Communication",
     rating: 4.9,
     views: 892,
-    lastUpdated: "2025-01-03"
+    lastUpdated: "2025-01-03",
   },
   {
     id: 3,
@@ -132,7 +139,7 @@ const supportArticles = [
     category: "Analytics & Reports",
     rating: 4.7,
     views: 567,
-    lastUpdated: "2025-01-01"
+    lastUpdated: "2025-01-01",
   },
   {
     id: 4,
@@ -142,8 +149,8 @@ const supportArticles = [
     category: "Getting Started",
     rating: 4.6,
     views: 2103,
-    lastUpdated: "2024-12-28"
-  }
+    lastUpdated: "2024-12-28",
+  },
 ];
 
 const quickActions = [
@@ -153,7 +160,7 @@ const quickActions = [
     icon: <FaComments />,
     action: "Start Chat",
     available: true,
-    color: "bg-green-500"
+    color: "bg-green-500",
   },
   {
     title: "Schedule a Call",
@@ -161,7 +168,7 @@ const quickActions = [
     icon: <FaPhone />,
     action: "Schedule",
     available: true,
-    color: "bg-blue-500"
+    color: "bg-blue-500",
   },
   {
     title: "Email Support",
@@ -169,7 +176,7 @@ const quickActions = [
     icon: <FaEnvelope />,
     action: "Send Email",
     available: true,
-    color: "bg-purple-500"
+    color: "bg-purple-500",
   },
   {
     title: "Video Tutorials",
@@ -177,8 +184,8 @@ const quickActions = [
     icon: <FaVideo />,
     action: "Watch Now",
     available: true,
-    color: "bg-orange-500"
-  }
+    color: "bg-orange-500",
+  },
 ];
 
 const AgentSupport = () => {
@@ -187,18 +194,24 @@ const AgentSupport = () => {
   const [expandedFAQ, setExpandedFAQ] = useState(null);
   const [activeTab, setActiveTab] = useState("faq");
 
-  const filteredFAQs = frequentlyAskedQuestions.filter(faq => {
-    const matchesSearch = faq.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         faq.answer.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         faq.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
-    const matchesCategory = selectedCategory === "All" || faq.category === selectedCategory;
+  const filteredFAQs = frequentlyAskedQuestions.filter((faq) => {
+    const matchesSearch =
+      faq.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      faq.answer.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      faq.tags.some((tag) =>
+        tag.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    const matchesCategory =
+      selectedCategory === "All" || faq.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
-  const filteredArticles = supportArticles.filter(article => {
-    const matchesSearch = article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         article.summary.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === "All" || article.category === selectedCategory;
+  const filteredArticles = supportArticles.filter((article) => {
+    const matchesSearch =
+      article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      article.summary.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory =
+      selectedCategory === "All" || article.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
@@ -219,8 +232,13 @@ const AgentSupport = () => {
           <div className="inline-flex items-center justify-center w-16 h-16 bg-[#0284c7] rounded-full mb-4">
             <FaLifeRing className="text-white text-2xl" />
           </div>
-          <h1 className="text-3xl font-bold text-[#091a2b] mb-2">Support Center</h1>
-          <p className="text-[#64748b] text-lg">Get help, find answers, and learn how to make the most of your agent portal</p>
+          <h1 className="text-3xl font-bold text-[#091a2b] mb-2">
+            Support Center
+          </h1>
+          <p className="text-[#64748b] text-lg">
+            Get help, find answers, and learn how to make the most of your agent
+            portal
+          </p>
         </div>
 
         {/* Search Bar */}
@@ -241,7 +259,10 @@ const AgentSupport = () => {
       {/* Quick Actions */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {quickActions.map((action, index) => (
-          <div key={index} className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow cursor-pointer">
+          <div
+            key={index}
+            className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow cursor-pointer"
+          >
             <div className="flex items-center mb-4">
               <div className={`p-3 rounded-lg ${action.color} text-white mr-3`}>
                 {action.icon}
@@ -263,7 +284,9 @@ const AgentSupport = () => {
 
       {/* Support Categories */}
       <div className="bg-white rounded-lg shadow-sm p-6">
-        <h2 className="text-xl font-bold text-[#091a2b] mb-6">Browse by Category</h2>
+        <h2 className="text-xl font-bold text-[#091a2b] mb-6">
+          Browse by Category
+        </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {supportCategories.map((category) => (
             <div
@@ -271,15 +294,21 @@ const AgentSupport = () => {
               onClick={() => setSelectedCategory(category.title)}
               className={`p-4 rounded-lg border cursor-pointer transition-all hover:shadow-md ${
                 selectedCategory === category.title
-                  ? 'border-[#0284c7] bg-[#e0f2fe]'
-                  : 'border-gray-200 hover:border-[#0284c7]'
+                  ? "border-[#0284c7] bg-[#e0f2fe]"
+                  : "border-gray-200 hover:border-[#0284c7]"
               }`}
             >
-              <div className={`inline-flex p-2 rounded-lg ${category.color} mb-3`}>
+              <div
+                className={`inline-flex p-2 rounded-lg ${category.color} mb-3`}
+              >
                 {category.icon}
               </div>
-              <h3 className="font-semibold text-[#091a2b] mb-1">{category.title}</h3>
-              <p className="text-sm text-[#64748b] mb-2">{category.description}</p>
+              <h3 className="font-semibold text-[#091a2b] mb-1">
+                {category.title}
+              </h3>
+              <p className="text-sm text-[#64748b] mb-2">
+                {category.description}
+              </p>
               <span className="text-xs text-[#0284c7] font-medium">
                 {category.articleCount} articles
               </span>
@@ -321,8 +350,12 @@ const AgentSupport = () => {
               {filteredFAQs.length === 0 ? (
                 <div className="text-center py-12">
                   <FaQuestionCircle className="mx-auto text-4xl text-[#e0f2fe] mb-4" />
-                  <h3 className="text-lg font-semibold text-[#091a2b] mb-2">No FAQs found</h3>
-                  <p className="text-[#64748b]">Try adjusting your search terms or category filter.</p>
+                  <h3 className="text-lg font-semibold text-[#091a2b] mb-2">
+                    No FAQs found
+                  </h3>
+                  <p className="text-[#64748b]">
+                    Try adjusting your search terms or category filter.
+                  </p>
                 </div>
               ) : (
                 filteredFAQs.map((faq) => (
@@ -382,8 +415,12 @@ const AgentSupport = () => {
               {filteredArticles.length === 0 ? (
                 <div className="text-center py-12">
                   <FaBook className="mx-auto text-4xl text-[#e0f2fe] mb-4" />
-                  <h3 className="text-lg font-semibold text-[#091a2b] mb-2">No articles found</h3>
-                  <p className="text-[#64748b]">Try adjusting your search terms or category filter.</p>
+                  <h3 className="text-lg font-semibold text-[#091a2b] mb-2">
+                    No articles found
+                  </h3>
+                  <p className="text-[#64748b]">
+                    Try adjusting your search terms or category filter.
+                  </p>
                 </div>
               ) : (
                 filteredArticles.map((article) => (
@@ -397,10 +434,14 @@ const AgentSupport = () => {
                           <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">
                             {article.category}
                           </span>
-                          <span className="text-xs text-[#64748b]">{article.readTime}</span>
+                          <span className="text-xs text-[#64748b]">
+                            {article.readTime}
+                          </span>
                           <div className="flex items-center gap-1">
                             <FaStar className="text-yellow-400 text-xs" />
-                            <span className="text-xs text-[#64748b]">{article.rating}</span>
+                            <span className="text-xs text-[#64748b]">
+                              {article.rating}
+                            </span>
                           </div>
                         </div>
                         <h3 className="text-lg font-semibold text-[#091a2b] mb-2">
@@ -414,7 +455,8 @@ const AgentSupport = () => {
                           </div>
                           <div className="flex items-center gap-1">
                             <FaClock />
-                            Updated {new Date(article.lastUpdated).toLocaleDateString()}
+                            Updated{" "}
+                            {new Date(article.lastUpdated).toLocaleDateString()}
                           </div>
                         </div>
                       </div>

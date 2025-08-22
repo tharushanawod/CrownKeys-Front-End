@@ -13,6 +13,7 @@ import {
   FaEye,
   FaEyeSlash,
   FaArrowLeft,
+  FaGoogle,
 } from "react-icons/fa";
 
 const SignUp = () => {
@@ -124,6 +125,34 @@ const SignUp = () => {
         // Handle generic error
         console.error("Signup error:", error);
       }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Google OAuth Sign Up
+  const handleGoogleSignUp = async () => {
+    try {
+      setIsLoading(true);
+
+      // Call the backend Google OAuth endpoint
+      const response = await axios.get("http://localhost:3000/api/auth/google");
+
+      if (response.data.success && response.data.data.url) {
+        console.log("Redirecting to Google OAuth URL:", response.data.data.url);
+        // Redirect to Google OAuth URL
+        window.location.href = response.data.data.url;
+      } else {
+        console.error("Failed to initiate Google OAuth");
+        setErrors({
+          general: "Failed to initiate Google sign up. Please try again.",
+        });
+      }
+    } catch (error) {
+      console.error("Google OAuth error:", error);
+      setErrors({
+        general: "Failed to connect with Google. Please try again.",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -282,6 +311,13 @@ const SignUp = () => {
           </div>
 
           <form className="space-y-6" onSubmit={handleSubmit}>
+            {/* General Error Message */}
+            {errors.general && (
+              <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                <p className="text-sm text-red-600">{errors.general}</p>
+              </div>
+            )}
+
             {/* First Name */}
             <div>
               <label
@@ -506,7 +542,8 @@ const SignUp = () => {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 type="submit"
-                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[var(--color-button-primary)] hover:bg-[var(--color-button-secondary)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-button-primary)] transition-colors duration-300"
+                disabled={isLoading}
+                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[var(--color-button-primary)] hover:bg-[var(--color-button-secondary)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-button-primary)] transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isLoading ? (
                   <>
@@ -516,6 +553,33 @@ const SignUp = () => {
                 ) : (
                   "Create Account"
                 )}
+              </motion.button>
+            </div>
+
+            {/* Divider */}
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300" />
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-white text-gray-500">
+                  Or continue with
+                </span>
+              </div>
+            </div>
+
+            {/* Google Sign Up Button */}
+            <div>
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                type="button"
+                onClick={handleGoogleSignUp}
+                disabled={isLoading}
+                className="w-full flex justify-center items-center py-3 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-button-primary)] transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <FaGoogle className="w-5 h-5 text-red-500 mr-2" />
+                {isLoading ? "Connecting..." : "Sign up with Google"}
               </motion.button>
             </div>
           </form>

@@ -55,19 +55,42 @@ const Login = () => {
       setIsLoading(true);
       try {
         const response = await axios.post(
-          "http://localhost:5000/api/auth/login",
+          "http://localhost:3000/api/auth/login",
           formData
         );
         console.log("Login successful:", response.data);
 
         // Redirect to dashboard after success
         setTimeout(() => {
-          navigate("/dashboard", {
-            state: {
-              message: "Login successful!",
-              email: formData.email,
-            },
-          });
+          if (response.data.data.user.role === "agent") {
+            navigate("/agent/dashboard", {
+              state: {
+                message: "Login successful!",
+                email: formData.email,
+              },
+            });
+          } else if (response.data.data.user.role === "buyer") {
+            navigate("/buyer/dashboard", {
+              state: {
+                message: "Login successful!",
+                email: formData.email,
+              },
+            });
+          } else if (response.data.data.user.role === "owner") {
+            navigate("/owner/dashboard", {
+              state: {
+                message: "Login successful!",
+                email: formData.email,
+              },
+            });
+          } else {
+            navigate("admin/dashboard", {
+              state: {
+                message: "Login successful!",
+                email: formData.email,
+              },
+            });
+          }
         }, 1000);
       } catch (error) {
         const newErrors = {};
