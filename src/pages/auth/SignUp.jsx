@@ -24,7 +24,7 @@ const SignUp = () => {
     password: "",
     confirmPassword: "",
     phone: "",
-    userRole: "buyer", // default role
+    role: "buyer", // default role - changed from userRole to match backend
   });
 
   const [errors, setErrors] = useState({});
@@ -77,7 +77,7 @@ const SignUp = () => {
     if (formData.password !== formData.confirmPassword)
       newErrors.confirmPassword = "Passwords do not match";
     if (!formData.phone.trim()) newErrors.phone = "Phone number is required";
-    if (!formData.userRole) newErrors.userRole = "Please select a user role";
+    if (!formData.role) newErrors.role = "Please select a user role";
 
     // setErrors(newErrors);
     return newErrors;
@@ -97,33 +97,62 @@ const SignUp = () => {
     setErrors({});
 
     try {
-      // Replace the URL below with your actual signup endpoint
+      // Prepare registration data
+      const registrationData = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        password: formData.password,
+        phone: formData.phone,
+        role: formData.role,
+      };
 
       const response = await axios.post(
-        "http://localhost:5000/api/auth/register",
-        formData
+        "http://localhost:3000/api/auth/register",
+        registrationData
       );
-      console.log("Signup successful:", response.data);
-      setShowSuccessPopup(true);
 
-      setTimeout(() => {
-        navigate("/login", {
-          state: {
-            message: "Registration successful! Please log in to continue.",
-            email: formData.email,
-          },
-        });
-      }, 3000);
-      // Optionally, handle redirect or show success message here
-    } catch (error) {
-      if (error.response && error.response.data && error.response.data.errors) {
-        // If your backend sends validation errors in this format
-        setErrors(error.response.data.errors);
-      } else if (error.response?.data?.message) {
-        console.log(error.response.data); // Show general error
+      // Check if registration was successful
+      if (response.data.success) {
+        console.log("Registration successful:", response.data);
+
+        // Store token and user data in localStorage
+        localStorage.setItem("token", response.data.data.token);
+        localStorage.setItem("role", response.data.data.user.role);
+        localStorage.setItem("user", JSON.stringify(response.data.data.user));
+
+        setShowSuccessPopup(true);
+
+        // Redirect based on user role after successful registration
+        setTimeout(() => {
+          navigate("/login");
+        }, 3000);
       } else {
-        // Handle generic error
-        console.error("Signup error:", error);
+        // Handle unsuccessful registration
+        setErrors({
+          general:
+            response.data.message || "Registration failed. Please try again.",
+        });
+      }
+    } catch (error) {
+      console.error("Registration error:", error);
+
+      if (error.response?.data) {
+        // Handle backend error responses
+        const errorData = error.response.data;
+
+        if (!errorData.success) {
+          // Set the error message from backend
+          setErrors({
+            general:
+              errorData.message || "Registration failed. Please try again.",
+          });
+        }
+      } else {
+        // Handle network or other errors
+        setErrors({
+          general: "Network error. Please check your connection and try again.",
+        });
       }
     } finally {
       setIsLoading(false);
@@ -291,11 +320,11 @@ const SignUp = () => {
                   type="button"
                   onClick={() =>
                     handleChange({
-                      target: { name: "userRole", value: role.id },
+                      target: { name: "role", value: role.id },
                     })
                   }
                   className={`flex flex-col items-center justify-center p-4 rounded-lg border-2 transition-all duration-200 ${
-                    formData.userRole === role.id
+                    formData.role === role.id
                       ? "border-[var(--color-button-primary)] bg-[var(--color-button-primary)] text-white"
                       : "border-gray-200 hover:border-[var(--color-button-primary)] text-[var(--color-primary)]"
                   }`}
@@ -305,8 +334,8 @@ const SignUp = () => {
                 </button>
               ))}
             </div>
-            {errors.userRole && (
-              <p className="mt-1 text-sm text-red-600">{errors.userRole}</p>
+            {errors.role && (
+              <p className="mt-1 text-sm text-red-600">{errors.role}</p>
             )}
           </div>
 
