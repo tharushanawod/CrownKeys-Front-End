@@ -1,194 +1,240 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import SidebarOwner from "../../components/SidebarOwner";
-import DashboardLayout from "../../components/DashboardLayout";
-import StatsCards from "../../components/StatsCards";
-import PropertyViewsChart from "../../components/PropertyViewsChart";
-import PropertiesTable from "../../components/PropertiesTable";
-import InquiriesWidget from "../../components/InquiriesWidget";
+import React, { useState } from "react";
+import {
+  FaBuilding,
+  FaEnvelope,
+  FaTags,
+  FaMoneyBillWave,
+  FaEye,
+  FaCalendarAlt,
+  FaFileAlt,
+  FaChartLine,
+  FaUsers,
+  FaHome,
+} from "react-icons/fa";
+import AgentPropertyCard from "../../components/AgentPropertyCard";
 
-const stats = [
+const statCards = [
+  { label: "Total Properties", value: 8, icon: <FaBuilding /> },
+  { label: "New Inquiries", value: 34, icon: <FaEnvelope /> },
+  { label: "Active Offers", value: 7, icon: <FaTags /> },
   {
-    label: "Total Active Listings",
-    value: "8 Properties",
-    change: "+2 this month",
-    color: "text-[#005163]",
-    subColor: "text-green-600",
-  },
-  {
-    label: "Total Views",
-    value: "2,847",
-    change: "this month",
-    color: "text-[#005163]",
-    subColor: "text-green-600",
-  },
-  {
-    label: "New Inquiries",
-    value: "34",
-    change: "pending",
-    color: "text-[#005163]",
-    subColor: "text-red-600",
-  },
-  {
-    label: "Average Property Value",
-    value: "$425,000",
-    change: "-5% this month",
-    color: "text-[#005163]",
-    subColor: "text-red-600",
+    label: "Monthly Revenue",
+    value: "$12,500",
+    icon: <FaMoneyBillWave />,
   },
 ];
 
-const properties = [
+const ownerProperties = [
   {
-    address: "123 Main Street",
+    id: 1,
+    image:
+      "https://images.unsplash.com/photo-1560184897-6a8c1b1e1c8b?auto=format&fit=crop&w=600&q=80",
     price: "$450,000",
+    title: "Downtown Apartment",
+    address: "123 Main Street, Downtown",
+    beds: 3,
+    baths: 2,
+    area: "1,800 sqft",
     views: 234,
     inquiries: 12,
-    status: "Active",
-    img: "https://images.unsplash.com/photo-1560184897-6a8c1b1e1c8b?auto=format&fit=crop&w=80&q=80",
+    monthlyRent: "$3,200",
+    status: "Rented",
   },
   {
-    address: "456 Oak Avenue",
+    id: 2,
+    image:
+      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80",
     price: "$375,000",
+    title: "Suburban Family Home",
+    address: "456 Oak Avenue, Suburbs",
+    beds: 4,
+    baths: 3,
+    area: "2,200 sqft",
     views: 189,
     inquiries: 8,
-    status: "Pending",
-    img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=80&q=80",
+    monthlyRent: "$2,750",
+    status: "Available",
   },
   {
-    address: "789 Pine Road",
+    id: 3,
+    image:
+      "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80",
     price: "$525,000",
+    title: "Modern City Loft",
+    address: "789 Pine Road, City Center",
+    beds: 2,
+    baths: 2,
+    area: "1,500 sqft",
     views: 312,
     inquiries: 15,
-    status: "Active",
-    img: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=80&q=80",
+    monthlyRent: "$4,200",
+    status: "Available",
   },
 ];
 
-const inquiries = [
+const performanceMetrics = [
+  { label: "Occupancy Rate", value: "92%", change: "+5%", up: true },
+  { label: "Avg. Monthly Revenue", value: "$8,200", change: "+12%", up: true },
+  { label: "Property Appreciation", value: "8.5%", change: "+2.1%", up: true },
+  { label: "Tenant Satisfaction", value: "4.7/5", change: "+0.3", up: true },
+];
+
+const recentActivity = [
   {
-    name: "Sarah Johnson",
-    address: "123 Main St",
+    icon: <FaUsers className="text-[#0284c7]" />,
+    title: "New Tenant Application",
+    desc: "456 Oak Avenue - John & Mary Smith",
     time: "2 hours ago",
-    status: "New",
   },
   {
-    name: "Michael Brown",
-    address: "456 Oak Ave",
-    time: "5 hours ago",
-    status: "Viewed",
+    icon: <FaMoneyBillWave className="text-[#0284c7]" />,
+    title: "Rent Payment Received",
+    desc: "123 Main Street - $3,200",
+    time: "4 hours ago",
   },
   {
-    name: "Emily Davis",
-    address: "789 Pine Rd",
+    icon: <FaEnvelope className="text-[#0284c7]" />,
+    title: "Property Inquiry",
+    desc: "789 Pine Road - Sarah Johnson",
     time: "1 day ago",
-    status: "Contacted",
+  },
+  {
+    icon: <FaHome className="text-[#0284c7]" />,
+    title: "Property Listed",
+    desc: "321 Elm Street - Available for rent",
+    time: "2 days ago",
   },
 ];
-
-const statusColors = {
-  Active: "bg-green-100 text-green-700",
-  Pending: "bg-yellow-100 text-yellow-700",
-};
-
-const inquiryStatusColors = {
-  New: "bg-blue-100 text-blue-700",
-  Viewed: "bg-green-100 text-green-700",
-  Contacted: "bg-gray-100 text-gray-700",
-};
-
-// Chart data for property views
-const chartData = {
-  labels: [
-    "Jan 1",
-    "Jan 2",
-    "Jan 3",
-    "Jan 4",
-    "Jan 5",
-    "Jan 6",
-    "Jan 7",
-    "Jan 8",
-    "Jan 9",
-    "Jan 10",
-    "Jan 11",
-    "Jan 12",
-    "Jan 13",
-    "Jan 14",
-    "Jan 15",
-    "Jan 16",
-    "Jan 17",
-    "Jan 18",
-    "Jan 19",
-    "Jan 20",
-    "Jan 21",
-    "Jan 22",
-    "Jan 23",
-    "Jan 24",
-    "Jan 25",
-    "Jan 26",
-    "Jan 27",
-    "Jan 28",
-    "Jan 29",
-    "Jan 30",
-  ],
-  datasets: [
-    {
-      label: "Property Views",
-      data: [
-        45, 52, 38, 67, 89, 76, 94, 82, 105, 91, 78, 85, 112, 98, 76, 89, 103,
-        87, 95, 108, 92, 84, 97, 113, 101, 88, 96, 104, 89, 92,
-      ],
-      borderColor: "#005163",
-      backgroundColor: "rgba(0, 81, 99, 0.1)",
-      borderWidth: 2,
-      fill: true,
-      tension: 0.4,
-      pointBackgroundColor: "#005163",
-      pointBorderColor: "#ffffff",
-      pointBorderWidth: 2,
-      pointRadius: 4,
-      pointHoverRadius: 6,
-    },
-  ],
-};
 
 const OwnerDashboard = () => {
-  const dashboardActions = (
-    <>
-      <Link
-        to="/owner/post-ad"
-        className="bg-[#005163] text-white px-4 py-2 rounded-lg font-semibold hover:bg-[#091a2b] transition-colors"
-      >
-        + Add Property
-      </Link>
-      <button className="bg-[#f1f3f4] text-[#005163] px-3 py-2 rounded-lg font-semibold hover:bg-[#e0e4e6] transition-colors">
-        Search
-      </button>
-    </>
-  );
+  const [properties, setProperties] = useState(ownerProperties);
+
+  const handleViewDetails = (property) => {
+    console.log("View details for:", property);
+    // You can add navigation to property details page or open a modal
+  };
+
+  const handleEdit = (property) => {
+    console.log("Edit property:", property);
+    // You can add navigation to edit property page
+  };
+
+  const handleDelete = (property) => {
+    console.log("Delete property:", property);
+    // Show confirmation dialog and delete property
+  };
+
+  const handleViewAnalytics = (property) => {
+    console.log("View property analytics:", property);
+    // Navigate to analytics page or open modal
+  };
 
   return (
-    <DashboardLayout
-      sidebar={SidebarOwner}
-      title="Welcome back, John Smith"
-      subtitle="Here's what's happening with your properties today."
-      actions={dashboardActions}
-    >
-      {/* Stats Cards */}
-      <StatsCards stats={stats} />
+    <div className="bg-[#f8fafc] p-4">
+      <div className="max-w-7xl">
+        {/* Welcome & Stat Cards */}
+        <div className="mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-[#091a2b] mb-4">
+            Welcome back, Property Owner
+          </h1>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {statCards.map((card) => (
+              <div
+                key={card.label}
+                className="bg-white rounded-xl shadow flex items-center gap-4 p-5"
+              >
+                <div className="bg-[#e0f2fe] text-[#0284c7] p-3 rounded-full text-xl">
+                  {card.icon}
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-[#091a2b]">
+                    {card.value}
+                  </div>
+                  <div className="text-[#64748b] text-sm">{card.label}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
 
-      {/* Chart & Inquiries */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <PropertyViewsChart data={chartData} />
-        <InquiriesWidget
-          inquiries={inquiries}
-          statusColors={inquiryStatusColors}
-        />
+        {/* Your Properties */}
+        <div className="mb-8">
+          <div className="font-semibold text-[#091a2b] mb-4 text-lg">
+            Your Properties
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {properties.map((property) => (
+              <AgentPropertyCard
+                key={property.id}
+                property={property}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+                onViewDetails={handleViewDetails}
+                onViewAnalytics={handleViewAnalytics}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Performance Metrics */}
+        <div className="mb-8">
+          <div className="font-semibold text-[#091a2b] mb-4 text-lg">
+            Performance Metrics
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {performanceMetrics.map((metric) => (
+              <div
+                key={metric.label}
+                className="bg-white rounded-xl shadow p-5 flex flex-col gap-1"
+              >
+                <div className="text-[#64748b] text-sm flex items-center gap-2">
+                  {metric.label}
+                  <FaChartLine className="text-green-500" />
+                </div>
+                <div className="text-xl font-bold text-[#091a2b]">
+                  {metric.value}
+                </div>
+                <div className="text-green-600 text-xs font-semibold">
+                  {metric.change}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Recent Activity */}
+        <div className="mb-8">
+          <div className="font-semibold text-[#091a2b] mb-4 text-lg">
+            Recent Activity
+          </div>
+          <div className="bg-white rounded-xl shadow p-4">
+            <ul className="divide-y divide-gray-100">
+              {recentActivity.map((item, idx) => (
+                <li
+                  key={idx}
+                  className="flex items-center justify-between py-3"
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="bg-[#e0f2fe] p-2 rounded-full text-xl">
+                      {item.icon}
+                    </span>
+                    <div>
+                      <div className="font-semibold text-[#091a2b] text-sm">
+                        {item.title}
+                      </div>
+                      <div className="text-xs text-[#64748b]">{item.desc}</div>
+                    </div>
+                  </div>
+                  <div className="text-xs text-[#94a3b8] whitespace-nowrap">
+                    {item.time}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </div>
-
-      {/* Properties Table */}
-      <PropertiesTable properties={properties} statusColors={statusColors} />
-    </DashboardLayout>
+    </div>
   );
 };
 

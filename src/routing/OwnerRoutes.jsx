@@ -12,7 +12,7 @@ import Profile from "../components/Profile";
 import OwnerProperties from "../pages/Owner/OwnerProperties";
 import PostAd from "../pages/Owner/PostAd";
 import Analytics from "../pages/Owner/Analytics";
-import Inquiries from "../pages/Owner/Inquiries";
+// import Inquiries from "../pages/Owner/Inquiries";
 import Offers from "../pages/Owner/Offers";
 import Financial from "../pages/Owner/Financial";
 import Packages from "../pages/Owner/Packages";
@@ -213,7 +213,7 @@ const OwnerRoutes = () => {
           <Route path="properties" element={<OwnerProperties />} />
           <Route path="post-ad" element={<PostAd />} />
           <Route path="analytics" element={<Analytics />} />
-          <Route path="inquiries" element={<Inquiries />} />
+          {/* <Route path="inquiries" element={<Inquiries />} /> */}
           <Route path="offers" element={<Offers />} />
           <Route path="financial" element={<Financial />} />
           <Route path="packages" element={<Packages />} />
