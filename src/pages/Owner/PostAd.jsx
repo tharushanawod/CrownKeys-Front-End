@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import SidebarOwner from "../../components/SidebarOwner";
+import api from "../../api/api";
 import {
   FaMoneyBill,
   FaHome,
@@ -126,7 +127,6 @@ const initialForm = {
   landAreaUnit: "acres",
   floorArea: "",
   price: "",
-  floors: 1,
   age: "",
   status: "",
   usp: "",
@@ -139,9 +139,12 @@ const initialForm = {
 const PostAd = () => {
   const [step, setStep] = useState(1);
   const [form, setForm] = useState(initialForm);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
 
   // Simulate map click
-  const handleMapClick = (e) => {
+  const handleMapClick = () => {
     // For demo, randomize lat/lng
     const lat = (6.9 + Math.random() * 0.2).toFixed(6);
     const lng = (79.8 + Math.random() * 0.2).toFixed(6);
@@ -164,10 +167,48 @@ const PostAd = () => {
 
   const handleContinue = () => setStep((s) => s + 1);
   const handleBack = () => setStep((s) => s - 1);
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Submit logic here
-    alert("Ad submitted!\n" + JSON.stringify(form, null, 2));
+    setLoading(true);
+    setError(null);
+
+    try {
+      // Prepare the data for API submission
+      const propertyData = {
+        ...form,
+        // Convert string numbers to actual numbers
+        price: parseFloat(form.price),
+        bedrooms: parseInt(form.bedrooms),
+        bathrooms: parseInt(form.bathrooms),
+        landArea: parseFloat(form.landArea),
+        floorArea: parseFloat(form.floorArea),
+        age: parseInt(form.age),
+        parking: parseInt(form.parking),
+        approachRoad: parseFloat(form.approachRoad),
+        lat: parseFloat(form.lat),
+        lng: parseFloat(form.lng),
+      };
+
+      const response = await api.post("/owner/properties", propertyData);
+
+      if (response.data.success) {
+        setSuccess(true);
+        setForm(initialForm);
+        setStep(1);
+        alert("Property posted successfully!");
+      } else {
+        setError(response.data.message || "Failed to post property");
+      }
+    } catch (error) {
+      console.error("Error posting property:", error);
+      setError(
+        error.response?.data?.message ||
+          "Failed to post property. Please try again."
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -175,18 +216,31 @@ const PostAd = () => {
       <SidebarOwner />
       <div className="flex-1 flex flex-col min-w-0 sm:ml-64">
         <div className="max-w-2xl mx-auto w-full p-4 md:p-8">
-          <div className="bg-white rounded-xl shadow-lg p-6 md:p-10 mt-8 mb-8">
+          <div className="bg-white rounded-xl shadow-lg p-6 md:p-10 mt-8 mb-8 ">
             <h1 className="text-2xl md:text-3xl font-bold text-[#091a2b] mb-6 text-center">
               Post Your Ad
             </h1>
             <form onSubmit={handleSubmit}>
+              {/* Display error message */}
+              {error && (
+                <div className="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+                  {error}
+                </div>
+              )}
+
+              {/* Display success message */}
+              {success && (
+                <div className="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
+                  Property posted successfully!
+                </div>
+              )}
               {/* Stepper */}
               <div className="flex justify-center mb-8 gap-2">
                 {[1, 2, 3].map((s) => (
                   <div
                     key={s}
                     className={`w-8 h-2 rounded-full transition-all duration-300 ${
-                      step === s ? "bg-[#005163] w-16" : "bg-[#a8aeaf] w-8"
+                      step === s ? "bg-[#0284c7] w-16" : "bg-[#64748b] w-8"
                     }`}
                   ></div>
                 ))}
@@ -204,7 +258,7 @@ const PostAd = () => {
                         type="button"
                         className={`flex-1 flex flex-col items-center justify-center p-6 rounded-lg border-2 transition-colors text-lg font-semibold gap-2 focus:outline-none ${
                           form.offerType === "sale"
-                            ? "bg-[#005163] text-white border-[#005163]"
+                            ? "bg-[#0284c7] text-white border-[#0284c7]"
                             : "bg-white text-[#3b4876] border-[#a8aeaf] hover:bg-[#f1f3f4]"
                         }`}
                         onClick={() => setForm({ ...form, offerType: "sale" })}
@@ -215,7 +269,7 @@ const PostAd = () => {
                         type="button"
                         className={`flex-1 flex flex-col items-center justify-center p-6 rounded-lg border-2 transition-colors text-lg font-semibold gap-2 focus:outline-none ${
                           form.offerType === "rent"
-                            ? "bg-[#005163] text-white border-[#005163]"
+                            ? "bg-[#0284c7] text-white border-[#0284c7]"
                             : "bg-white text-[#3b4876] border-[#a8aeaf] hover:bg-[#f1f3f4]"
                         }`}
                         onClick={() => setForm({ ...form, offerType: "rent" })}
@@ -236,7 +290,7 @@ const PostAd = () => {
                           type="button"
                           className={`flex flex-col items-center justify-center p-4 rounded-lg border-2 transition-colors text-base font-semibold gap-2 focus:outline-none ${
                             form.propertyType === type.key
-                              ? "bg-[#005163] text-white border-[#005163]"
+                              ? "bg-[#0284c7] text-white border-[#0284c7]"
                               : "bg-white text-[#3b4876] border-[#a8aeaf] hover:bg-[#f1f3f4]"
                           }`}
                           onClick={() =>
@@ -265,7 +319,7 @@ const PostAd = () => {
                               type="button"
                               className={`flex items-center justify-center p-3 rounded-lg border-2 transition-colors text-sm font-semibold focus:outline-none ${
                                 form.landSubcategory === sub
-                                  ? "bg-[#005163] text-white border-[#005163]"
+                                  ? "bg-[#0284c7] text-white border-[#0284c7]"
                                   : "bg-white text-[#3b4876] border-[#a8aeaf] hover:bg-[#f1f3f4]"
                               }`}
                               onClick={() =>
@@ -337,7 +391,7 @@ const PostAd = () => {
                   <div className="flex justify-end mt-8">
                     <button
                       type="button"
-                      className="bg-[#005163] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#091a2b] transition-colors flex items-center gap-2"
+                      className="bg-[#0284c7] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#0369a1] transition-colors flex items-center gap-2"
                       onClick={handleContinue}
                       disabled={
                         !form.offerType ||
@@ -655,14 +709,14 @@ const PostAd = () => {
                   <div className="flex justify-between mt-8">
                     <button
                       type="button"
-                      className="bg-[#a8aeaf] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#3b4876] transition-colors flex items-center gap-2"
+                      className="bg-[#64748b] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#475569] transition-colors flex items-center gap-2"
                       onClick={handleBack}
                     >
                       <FaChevronLeft /> Back
                     </button>
                     <button
                       type="button"
-                      className="bg-[#005163] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#091a2b] transition-colors flex items-center gap-2"
+                      className="bg-[#0284c7] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#0369a1] transition-colors flex items-center gap-2"
                       onClick={handleContinue}
                       disabled={
                         !form.heading ||
@@ -740,16 +794,17 @@ const PostAd = () => {
                   <div className="flex justify-between mt-8">
                     <button
                       type="button"
-                      className="bg-[#a8aeaf] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#3b4876] transition-colors flex items-center gap-2"
+                      className="bg-[#64748b] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#475569] transition-colors flex items-center gap-2"
                       onClick={handleBack}
                     >
                       <FaChevronLeft /> Back
                     </button>
                     <button
                       type="submit"
-                      className="bg-[#005163] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#091a2b] transition-colors flex items-center gap-2"
+                      disabled={loading}
+                      className="bg-[#0284c7] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#0369a1] transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      Submit <FaCheck />
+                      {loading ? "Posting..." : "Submit"} <FaCheck />
                     </button>
                   </div>
                 </div>
