@@ -49,16 +49,6 @@ const propertyTypes = [
     icon: <FaHome className="text-3xl" />,
   },
 ];
-const landSubcategories = [
-  "Residential Land",
-  "Agricultural Land",
-  "Tea Estate Land",
-  "Rubber Estate Land",
-  "Coconut Estate Land",
-  "Paddy (Rice) Land",
-  "Cinnamon Estate Land",
-  "Waterfront Land",
-];
 const statusOptions = [
   "Available Now",
   "Available Soon",
@@ -68,15 +58,6 @@ const statusOptions = [
 const furnishingOptions = ["Fully Furnished", "Semi-Furnished", "Unfurnished"];
 
 // Add property-specific features
-const landFeatures = [
-  { key: "beachfront", label: "Beachfront/sea view 🌊" },
-  { key: "waterfront", label: "Waterfront/riverside" },
-  { key: "gated", label: "Gated Community 🏡🔒" },
-  { key: "mainLineWater", label: "Main Line Water 💧" },
-  { key: "threePhase", label: "3-Phase Electricity ⚡" },
-  { key: "security24", label: "24 Hours Security 🕵️‍♂️" },
-];
-
 const houseFeatures = [
   { key: "luxury", label: "Luxury Specification 👑" },
   { key: "colonial", label: "Colonial Architecture 🏛️" },
@@ -114,11 +95,11 @@ const commercialFeatures = [
 const initialForm = {
   offerType: "",
   propertyType: "",
-  landSubcategory: "",
   lat: "",
   lng: "",
   city: "",
-  street: "",
+  district: "",
+  address: "",
   heading: "",
   description: "",
   bedrooms: 0,
@@ -297,7 +278,6 @@ const PostAd = () => {
                             setForm({
                               ...form,
                               propertyType: type.key,
-                              landSubcategory: "",
                             })
                           }
                         >
@@ -306,32 +286,6 @@ const PostAd = () => {
                         </button>
                       ))}
                     </div>
-                    {/* Land Subcategories as Cards */}
-                    {form.propertyType === "lands" && (
-                      <div className="mt-4">
-                        <label className="block text-[#091a2b] font-medium mb-2">
-                          Select Land Type
-                        </label>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                          {landSubcategories.map((sub) => (
-                            <button
-                              key={sub}
-                              type="button"
-                              className={`flex items-center justify-center p-3 rounded-lg border-2 transition-colors text-sm font-semibold focus:outline-none ${
-                                form.landSubcategory === sub
-                                  ? "bg-[#0284c7] text-white border-[#0284c7]"
-                                  : "bg-white text-[#3b4876] border-[#a8aeaf] hover:bg-[#f1f3f4]"
-                              }`}
-                              onClick={() =>
-                                setForm({ ...form, landSubcategory: sub })
-                              }
-                            >
-                              {sub}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    )}
                   </div>
                   {/* Map Picker */}
                   <div>
@@ -357,7 +311,7 @@ const PostAd = () => {
                       </div>
                     )}
                   </div>
-                  {/* City & Street */}
+                  {/* City & District */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-[#091a2b] font-medium mb-1">
@@ -375,18 +329,33 @@ const PostAd = () => {
                     </div>
                     <div>
                       <label className="block text-[#091a2b] font-medium mb-1">
-                        Street
+                        District
                       </label>
                       <input
                         type="text"
-                        name="street"
-                        value={form.street}
+                        name="district"
+                        value={form.district}
                         onChange={handleChange}
                         className="w-full p-3 border border-[#a8aeaf] rounded-lg focus:outline-none focus:border-[#005163] text-[#3b4876]"
-                        placeholder="Enter street"
+                        placeholder="Enter district"
                         required
                       />
                     </div>
+                  </div>
+                  {/* Address */}
+                  <div>
+                    <label className="block text-[#091a2b] font-medium mb-1">
+                      Address
+                    </label>
+                    <input
+                      type="text"
+                      name="address"
+                      value={form.address}
+                      onChange={handleChange}
+                      className="w-full p-3 border border-[#a8aeaf] rounded-lg focus:outline-none focus:border-[#005163] text-[#3b4876]"
+                      placeholder="Enter full address"
+                      required
+                    />
                   </div>
                   <div className="flex justify-end mt-8">
                     <button
@@ -396,12 +365,11 @@ const PostAd = () => {
                       disabled={
                         !form.offerType ||
                         !form.propertyType ||
-                        (form.propertyType === "lands" &&
-                          !form.landSubcategory) ||
                         !form.lat ||
                         !form.lng ||
                         !form.city ||
-                        !form.street
+                        !form.district ||
+                        !form.address
                       }
                     >
                       Continue <FaChevronRight />
@@ -681,10 +649,8 @@ const PostAd = () => {
                       Property Features
                     </label>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-56 overflow-y-auto">
-                      {(form.propertyType === "lands"
-                        ? landFeatures
-                        : form.propertyType === "homes" ||
-                          form.propertyType === "apartments"
+                      {(form.propertyType === "homes" ||
+                      form.propertyType === "apartments"
                         ? houseFeatures
                         : commercialFeatures
                       ).map((feature) => (
@@ -760,36 +726,20 @@ const PostAd = () => {
                       required
                     />
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-[#091a2b] font-medium mb-1">
-                        No. of Floors
-                      </label>
-                      <input
-                        type="number"
-                        name="floors"
-                        min="1"
-                        value={form.floors}
-                        onChange={handleChange}
-                        className="w-full p-3 border border-[#a8aeaf] rounded-lg focus:outline-none focus:border-[#005163] text-[#3b4876]"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-[#091a2b] font-medium mb-1">
-                        Primary USP
-                      </label>
-                      <input
-                        type="text"
-                        name="usp"
-                        maxLength={20}
-                        value={form.usp}
-                        onChange={handleChange}
-                        className="w-full p-3 border border-[#a8aeaf] rounded-lg focus:outline-none focus:border-[#005163] text-[#3b4876]"
-                        placeholder="e.g. Sea View, Brand New"
-                        required
-                      />
-                    </div>
+                  <div>
+                    <label className="block text-[#091a2b] font-medium mb-1">
+                      Primary USP
+                    </label>
+                    <input
+                      type="text"
+                      name="usp"
+                      maxLength={20}
+                      value={form.usp}
+                      onChange={handleChange}
+                      className="w-full p-3 border border-[#a8aeaf] rounded-lg focus:outline-none focus:border-[#005163] text-[#3b4876]"
+                      placeholder="e.g. Sea View, Brand New"
+                      required
+                    />
                   </div>
                   <div className="flex justify-between mt-8">
                     <button
